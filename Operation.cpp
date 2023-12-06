@@ -11,13 +11,11 @@ Operation::Operation() {
 void Operation::set_username(string name) {
     username = name;
     cout<<"Name Set: "<<name<<endl;
-    //update log
 }
 
 void Operation::set_note(string n) {
     note = n;
     cout<<"Note Set: "<<note<<endl;
-    //update log
 }
 
 void Operation::set_load_or_balance(char a) {
@@ -28,7 +26,6 @@ void Operation::set_load_or_balance(char a) {
 void Operation::set_manifest_path(string path) {
     manifest_path = path;
     cout<<"Path set: "<<path<<endl;
-    //update log stating manifest was opened
 }
 
 string Operation::get_manifest_path() {
@@ -38,8 +35,6 @@ string Operation::get_manifest_path() {
 }
 
 vector<Container*> Operation::get_containers() {
-    //make sure all containers have been gotten before returning containers
-    //DEMO PURPOSES ONLY!!! BEGIN
     QFile file(QString::fromStdString(manifest_path));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "Error oppening file: " << file.errorString();
@@ -60,13 +55,6 @@ vector<Container*> Operation::get_containers() {
         }
     }
     file.close();
-    // Container* container1 = new Container("s 01,02","Cat",99);
-    // containers.push_back(container1);
-    // Container* container2 = new Container("s 01,03","Dog",100);
-    // containers.push_back(container2);
-    // Container* container3 = new Container("s 01,07","Rats",-1);
-    // containers.push_back(container3);
-    //DEMO PURPOSES ONLY!! END
     return containers;
 }
 //Move(Container*, string, unsigned int);

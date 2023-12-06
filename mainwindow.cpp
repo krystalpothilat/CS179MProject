@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->NoteInput->setVisible(false);
     ui->UserNameInput->setVisible(false);
     ui->stackedWidget->setCurrentIndex(0);
+    currentUTCtime = QDateTime::currentDateTimeUtc();
+    pacificTimeZone = QTimeZone("America/Los_Angeles");
+    qlogpath = QString::fromStdString(logpath);
 }
 
 MainWindow::~MainWindow()
@@ -119,6 +122,33 @@ void MainWindow::save(){
     ui->Download_Manifest_Confirm->setVisible(true);
 }
 
+string MainWindow::get_date_and_time(){
+    currentTime = currentUTCtime.toTimeZone(pacificTimeZone);
+    int year = currentTime.date().year();
+    int month = currentTime.date().month();
+    int day = currentTime.date().day();
+    QString formattedDay = QString("%1").arg(day, 2, 10, QChar('0'));
+    QString formattedMinutes = currentTime.toString("mm");
+    QString formattedHours = currentTime.toString("hh");
+
+    string log_date_time = to_string(month) + "/" + formattedDay.toStdString() + "/" + to_string(year) + ": " + formattedHours.toStdString() + ":" + formattedMinutes.toStdString() + " ";
+    return log_date_time;
+}
+
+void MainWindow::updatelog(string description){
+    QFile file (qlogpath);
+    string datetime = get_date_and_time();
+    string s = datetime + description;
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)){
+        QTextStream stream(&file);
+        stream << QString::fromStdString(s) << "\n";
+        file.close();
+    } else {
+        qDebug() << "Error opening file:" << file.errorString();
+    }
+}
+
 void MainWindow::on_Main_Menu_Load_Unload_clicked()
 {
     load_or_balance = 'l';
@@ -140,6 +170,8 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
     if(load_or_balance=='l'){
         ui->stackedWidget->setCurrentIndex(2);
         get_unload_options();
+        string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
+        updatelog(description);
     }
     else{
         ui->stackedWidget->setCurrentIndex(3);
@@ -265,6 +297,7 @@ void MainWindow::on_UserNameInput_returnPressed()
     CurrentOperation->set_username(name);
     ui->UserNameInput->setText(" ");
     ui->UserNameInput->setVisible(false);
+    updatelog(name + " signs in");
 }
 
 void MainWindow::on_NoteInput_returnPressed()
@@ -273,6 +306,7 @@ void MainWindow::on_NoteInput_returnPressed()
     CurrentOperation->set_note(note);
     ui->NoteInput->setText(" ");
     ui->NoteInput->setVisible(false);
+    updatelog(note);
 }
 
 void MainWindow::on_Main_Window_Note_clicked()
