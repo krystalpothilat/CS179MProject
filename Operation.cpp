@@ -82,11 +82,14 @@ vector<Move *> Operation::get_moves()
     //Calculate moves given all the data before returning moves
 
     //DEMO PURPOSES ONLY!!! BEGIN
-    Move *move1 = new Move(containers.at(0), "b 01,01", 7);
+    Container* container1 = new Container("s 01,02","Cat",99);
+    Container* container2 = new Container("s 01,03","Dog",100);
+    Container* container3 = new Container("s 01,07","Rats",-1);
+    Move *move1 = new Move(container1, "b 01,01", 7);
     moves.push_back(move1);
-    Move *move2 = new Move(containers.at(1), "t", 8);
+    Move *move2 = new Move(container2, "t", 8);
     moves.push_back(move2);
-    Move *move3 = new Move(containers.at(2), "s 01,02", 5);
+    Move *move3 = new Move(container3, "s 01,05", 5);
     moves.push_back(move3);
     //DEMO PURPOSES ONLY!!! END
 
