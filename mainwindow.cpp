@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+//TO DO: Make the application able to recover from unexpected powerloss
+//TO DO: Implement a simple animation for the step x of x screen 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,9 +24,37 @@ MainWindow::~MainWindow()
     clear_vectors();
 }
 
+// Helper Functions
+void MainWindow::showDialog(const QString &message) {
+    QDialog *dialog = new QDialog();
+    dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
+    dialog->setMinimumHeight(140);
+    dialog->setMinimumWidth(740);
+
+    QLabel *displayInvalidStrings = new QLabel();
+    displayInvalidStrings->setParent(dialog);
+    QFont font("Segoe UI", 18);
+    displayInvalidStrings->setFont(font);
+    displayInvalidStrings->setGeometry(10, 10, 720, 100);
+    displayInvalidStrings->setText(message);
+    displayInvalidStrings->show();
+
+    dialog->show();
+}
+
 bool MainWindow::containsNonPrintableCharacters(const QString &text) {
     static QRegularExpression nonPrintableRegex("[^\\x20-\\x7E]");
     return text.contains(nonPrintableRegex);
+}
+
+QString MainWindow::removeTxtExtension(const QString &filename)
+{
+    QFileInfo fileInfo(filename);
+    if (fileInfo.suffix().toLower() == "txt") {
+        // Remove ".txt" at the end
+        return fileInfo.baseName();
+    }
+    return filename;
 }
 
 void MainWindow::hide_elements()
@@ -45,6 +75,7 @@ void MainWindow::hide_elements()
     ui->weightinput->setVisible(false);
     ui->weightprompt->setVisible(false);
 }
+
 void MainWindow::clear_vectors()
 {
     to_be_loaded.clear();
@@ -124,6 +155,7 @@ void MainWindow::save()
     ui->Download_Manifest_Confirm->setVisible(true);
 }
 
+//Main Menu Slots:
 void MainWindow::on_Main_Menu_Load_Unload_clicked()
 {
     load_or_balance = 'l';
@@ -138,7 +170,7 @@ void MainWindow::on_Main_Menu_Balance_clicked()
     ui->stackedWidget->setCurrentIndex(6);
 }
 
-//upload manifest slots
+//Upload Manifest Slots:
 void MainWindow::on_Upload_Manifest_Confirm_clicked()
 {
     CurrentOperation->set_manifest_path(filepath); //sends file path to backend now that user has confirmed their choice
@@ -164,16 +196,8 @@ void MainWindow::on_UploadManifestSelectFile_clicked()
         ui->Upload_Manifest_Confirm->setVisible(true);
     }
 }
-QString MainWindow::removeTxtExtension(const QString &filename)
-{
-    QFileInfo fileInfo(filename);
-    if (fileInfo.suffix().toLower() == "txt") {
-        // Remove ".txt" at the end
-        return fileInfo.baseName();
-    }
-    return filename;
-}
-//select unload slots
+
+//Select Unload Slots
 void MainWindow::on_Select_Unload_Confirm_clicked()
 {
     for (unsigned long long i = 0; i < indexVector.size(); i++) {
@@ -183,6 +207,7 @@ void MainWindow::on_Select_Unload_Confirm_clicked()
     CurrentOperation->set_unload(to_be_unloaded);
     ui->stackedWidget->setCurrentIndex(1);
 }
+
 void MainWindow::on_unLoadContainerDisplay_itemClicked(QListWidgetItem *item)
 {
     string description = item->text().toStdString();
@@ -195,7 +220,8 @@ void MainWindow::on_unLoadContainerDisplay_itemClicked(QListWidgetItem *item)
         indexVector.push_back(index);
     }
 }
-//select load slots
+
+//Select Load Slots:
 void MainWindow::on_LoadContainerInput_returnPressed()
 {
     QString qcontainer = ui->LoadContainerInput->text().trimmed();  // Trim whitespace
@@ -225,24 +251,6 @@ void MainWindow::on_LoadContainerInput_returnPressed()
     ui->LoadContainerInput->setText("");
 }
 
-void MainWindow::showDialog(const QString &message) {
-    QDialog *dialog = new QDialog();
-    dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
-    dialog->setMinimumHeight(140);
-    dialog->setMinimumWidth(740);
-
-    QLabel *displayInvalidStrings = new QLabel();
-    displayInvalidStrings->setParent(dialog);
-    QFont font("Segoe UI", 18);
-    displayInvalidStrings->setFont(font);
-    displayInvalidStrings->setGeometry(10, 10, 720, 100);
-    displayInvalidStrings->setText(message);
-    displayInvalidStrings->show();
-
-    dialog->show();
-}
-
-
 void MainWindow::on_Select_Load_Confirm_clicked()
 {
     CurrentOperation->set_load(to_be_loaded);
@@ -250,15 +258,14 @@ void MainWindow::on_Select_Load_Confirm_clicked()
     calculate();
 }
 
-//x moves x minutes
+//X Moves X Minutes Slots:
 void MainWindow::on_X_Moves_X_Minutes_Confirm_clicked()
 {
     ui->stackedWidget->setCurrentIndex(4);
     display_move(index);
 }
 
-//step x of x slots
-//TO DO check for valid input
+//Step X of X Slots:
 void MainWindow::on_weightinput_returnPressed()
 {
     Container *currentContainer = to_be_completed_moves.at(index)->get_container();
@@ -298,7 +305,6 @@ void MainWindow::on_weightinput_returnPressed()
     }
 }
 
-
 void MainWindow::on_Step_X_of_X_Confirm_clicked()
 {
     time -= to_be_completed_moves.at(index)->get_time();
@@ -312,6 +318,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
     }
 }
 
+//Download Manifest Slots:
 void MainWindow::on_Download_Manifest_Confirm_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -326,7 +333,7 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
     hide_elements();
 }
 
-//Main window slots
+//Main Window Slots:
 void MainWindow::on_UserNameInput_returnPressed()
 {
     QString qname = ui->UserNameInput->text().trimmed();
