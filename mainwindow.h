@@ -1,12 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDir>
+#include <QDialog>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QListWidgetItem>
 #include <QMainWindow>
 #include "Operation.h"
-#include <QFileDialog>
-#include <QDir>
-#include <QListWidgetItem>
-#include <QFileInfo>
+#include <QString>
+#include <QRegularExpression>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,20 +22,23 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    Operation* CurrentOperation;
-    vector <Container*> to_be_loaded;
-    vector <Container*> to_be_unloaded;
-    vector <Move*> to_be_completed_moves;
-    vector <Container*> to_be_unloaded_options;
-    vector <int> indexVector;
+    Operation *CurrentOperation;
+    vector<Container *> to_be_loaded;
+    vector<Container *> to_be_unloaded;
+    vector<Move *> to_be_completed_moves;
+    vector<Container *> to_be_unloaded_options;
+    vector<int> indexVector;
     string moveoutput = " ";
     char load_or_balance = ' ';
-    string filepath =" ";
+    string filepath = " ";
     string filename = " ";
     int time = 0;
     unsigned long long index = 0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void showDialog(const QString &message);
+    bool containsNonPrintableCharacters(const QString &text);
+    QString removeTxtExtension(const QString &filename);
     void hide_elements();
     void clear_vectors();
     void display_move(unsigned long long i);
