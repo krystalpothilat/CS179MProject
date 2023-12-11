@@ -11,14 +11,20 @@ CONFIG += c++17
 SOURCES += \
     Container.cpp \
     Move.cpp \
+    Node.cpp \
     Operation.cpp \
+    Search.cpp \
+    Slot.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Container.h \
     Move.h \
+    Node.h \
     Operation.h \
+    Search.h \
+    Slot.h \
     mainwindow.h
 
 FORMS += \

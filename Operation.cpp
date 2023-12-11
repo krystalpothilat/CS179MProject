@@ -1,5 +1,6 @@
 #include "Operation.h"
 #include "QtCore/qdebug.h"
+#include "Search.h"
 
 Operation::Operation()
 {
@@ -80,6 +81,16 @@ vector<Container *> Operation::get_containers()
 vector<Move *> Operation::get_moves()
 {
     //Calculate moves given all the data before returning moves
+
+    //Malina testing
+    Search t;
+    t.manifestPath=get_manifest_path();
+    //cout<<"\nSeach path: "<< t.manifestPath;
+    //t.getMovesList();
+    string test="00900";
+    int w=stoi(test);
+    cout<<"converted: "<<w;
+
 
     //DEMO PURPOSES ONLY!!! BEGIN
     Container* container1 = new Container("s 01,02","Cat",99);
