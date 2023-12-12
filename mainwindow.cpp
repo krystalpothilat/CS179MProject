@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//TO DO: Make the application able to recover from unexpected powerloss
 //TO DO: Implement a simple animation for the step x of x screen 
 
 MainWindow::MainWindow(QWidget *parent)
