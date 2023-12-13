@@ -24,10 +24,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    ui->UserNameDisplay->clear();
+    ui->ManifestDisplay->clear();
     delete ui;
     CurrentOperation->reset();
     delete CurrentOperation;
     clear_vectors();
+
 }
 
 // Helper Functions
