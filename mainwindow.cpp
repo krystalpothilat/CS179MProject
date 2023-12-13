@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     pacificTimeZone = QTimeZone("America/Los_Angeles");
     qlogpath = QString::fromStdString(logpath);
     flashTimer = new QTimer(this);
-    connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
+    // connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
     // flashTimer->start(500);
 }
 
@@ -119,6 +119,8 @@ void MainWindow::get_unload_options()
 void MainWindow::display_move(unsigned long long i)
 {
     cout << "display" << endl;
+    flashTimer->stop();
+    disconnect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
     ui->Step_X_of_X_Confirm->setVisible(false);
     Container *currentContainer = to_be_completed_moves.at(i)->get_container();
     string location = " ";
@@ -127,26 +129,41 @@ void MainWindow::display_move(unsigned long long i)
     string coordname = "";
     if (currentContainer->get_location() == "t") {
         location = "Truck";
+        coordname = "truckborder";
     } else if (currentContainer->get_location().at(0) == 'b') {
         coord = currentContainer->get_location().substr(2, 5);
         location = "Buffer at " + coord;
+        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
     } else {
         coord = currentContainer->get_location().substr(2, 5);
         location = "Ship at " + coord;
+        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
     }
-    if(coord != ""){
-        coordname = coord.substr(0,2) + coord.substr(3,2);
-    //     set_container_style(QString::fromStdString(coordname), "chosen");
-        cout << coordname<< endl;
-    }
+    // if(coordname != ""){
+        set_container_style(QString::fromStdString(coordname), "chosen");
+        CurrentOperation->set_current_container(QString::fromStdString(coordname));
+    // }
+
+    coord = "";
+    coordname = "";
 
     if (to_be_completed_moves.at(i)->get_final_location() == "t") {
         finalLocation = "Truck";
+        coordname = "truckborder";
     } else if (to_be_completed_moves.at(i)->get_final_location().at(0) == 'b') {
-        finalLocation = "Buffer at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        finalLocation = "Buffer at " + coord;
+        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
     } else {
+        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
         finalLocation = "Ship at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
     }
+
+    // if(coordname != ""){
+        set_container_style(QString::fromStdString(coordname), "goal");
+        CurrentOperation->set_goal_loc(QString::fromStdString(coordname));
+    // }
 
     moveoutput = "Step " + to_string(i + 1) + " of " + to_string(to_be_completed_moves.size()) + "\n";
     moveoutput += "Move " + currentContainer->get_description() + " from " + location + " to " + finalLocation + "\n";
@@ -174,10 +191,9 @@ void MainWindow::save()
 
 //Flashing Display Slots:
 void MainWindow::toggleLabelVisibility(){
-    toggleLabelVisibility(goalContainer);
+    toggleLabelVisibility(CurrentOperation->get_goal_loc());
 }
 void MainWindow::toggleLabelVisibility(const QString labelName){
-    cout << "togglelabel" << endl;
     QLabel *label = findChild<QLabel*>(labelName);
     if (label) {
         label->setVisible(!label->isVisible());
@@ -371,6 +387,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 {
     time -= to_be_completed_moves.at(index)->get_time();
     CurrentOperation->move_complete(index);
+    update_container_styles();
     index++;
     if (index == to_be_completed_moves.size()) {
         ui->stackedWidget->setCurrentIndex(5);
@@ -669,16 +686,34 @@ void MainWindow::set_up_animation(){
 
 void MainWindow::set_container_style(const QString containerName, string type){
     QLabel *label = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(containerName));
-    if(type == "chosen"){
-        label->setStyleSheet("background-color: green;");
-    } else if (type == "goal"){
-        label->setStyleSheet("background-color: yellow;");
-        goalContainer = containerName;
+    if(type == "chosen"){ //container to be moved
+        if(containerName[0] == 't'){
+            label->setStyleSheet("border:3px solid green;");
+        } else {
+            label->setStyleSheet("background-color: green;");
+        }
+    } else if (type == "goal"){ //location for container to be moved to
+        if(containerName[0] == 't'){
+            label->setStyleSheet("border:3px solid yellow;");
+        } else {
+            label->setStyleSheet("background-color: yellow;");
+        }
         connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
         flashTimer->start(750);
-        ui->animationbase->setVisible(true);
     } else if (type == "NAN"){
         label->setStyleSheet("background-color: grey;");
+    } else if (type == "update"){ //set location as container
+        if(containerName[0] == 't'){
+            label->setVisible(false);
+        } else {
+            label->setStyleSheet("background-color: purple;");
+        }
+    } else { //location now empty
+        if(containerName[0] == 't'){
+            label->setVisible(false);
+        } else {
+            label->setStyleSheet("background-color: white; border: 1px solid black;");
+        }
     }
 }
 
@@ -690,4 +725,11 @@ void MainWindow::set_NAN_containers(){
     //     QString location = QString::fromStdString(containers[i]->get_location());
     //     set_container_style(location, "NAN");
     // }
+}
+
+void MainWindow::update_container_styles(){
+    QString chosen = CurrentOperation->get_current_container();
+    set_container_style(chosen, "");
+    QString goal = CurrentOperation->get_goal_loc();
+    set_container_style(goal, "update");
 }

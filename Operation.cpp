@@ -74,6 +74,22 @@ vector<Container*> Operation::get_containers()
     return containers;
 }
 
+void Operation::set_current_container(QString s){
+    current_container_loc = s;
+}
+
+QString Operation::get_current_container(){
+    return current_container_loc;
+}
+
+void Operation::set_goal_loc(QString s){
+    current_goal_loc = s;
+};
+
+QString Operation::get_goal_loc(){
+    return current_goal_loc;
+}
+
 //Move(Container*, string, unsigned int);
 vector<Move *> Operation::get_moves()
 {

@@ -63,10 +63,10 @@ public:
     string get_date_and_time();
     void updatelog(string);
     QTimer* flashTimer;
-    QString goalContainer;
     void set_up_animation();
     void set_NAN_containers();
     void set_container_style(const QString, string);
+    void update_container_styles();
 
 private slots:
     void on_Main_Menu_Load_Unload_clicked();

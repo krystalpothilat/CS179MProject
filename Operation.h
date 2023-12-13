@@ -17,6 +17,8 @@ private:
     vector<Container*> containers; //vector of container pointers
     vector<Container*> NAN_containers;
     vector<Move*> moves; //vector of move pointers to be completed in order index 0 = first move
+    QString current_container_loc;
+    QString current_goal_loc;
 public:
     Operation();
 
@@ -33,6 +35,14 @@ public:
     vector<Container*> get_NAN_containers();
 
     vector<Container*> get_containers();
+
+    void set_current_container(QString);
+
+    QString get_current_container();
+
+    void set_goal_loc(QString);
+
+    QString get_goal_loc();
 
     vector<Move*> get_moves();
 
