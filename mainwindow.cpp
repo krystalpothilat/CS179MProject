@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//TO DO: Limit users string inputs to 256 characters
 //TO DO: Implement brand logos and color schemes https://www.dropbox.com/scl/fo/524c89yxb0bwhtulqraw6/h?dl=0&preview=Keoghs+Port-logos_transparent.png&rlkey=k0j63nnq24gdyomiu1v4pc76c
 //TO DO: Implement a simple animation for the step x of x screen 
 
