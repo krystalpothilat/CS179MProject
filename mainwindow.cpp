@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    ui->LoadContainerDisplay->clear();
+    ui->unLoadContainerDisplay->clear();
     ui->UserNameDisplay->clear();
     ui->ManifestDisplay->clear();
     delete ui;
@@ -347,6 +349,8 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
     filepath = " ";
     filename = " ";
     load_or_balance = ' ';
+    ui->LoadContainerDisplay->clear();
+    ui->unLoadContainerDisplay->clear();
     indexVector.clear();
     CurrentOperation->reset();
     hide_elements();
