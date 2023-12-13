@@ -35,6 +35,8 @@ public:
     int time = 0;
     const int MAXCHARLIMIT = 256;
     unsigned long long index = 0;
+    QListWidgetItem *UserName;
+    QListWidgetItem *Manifest;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void showDialog(const QString &message);

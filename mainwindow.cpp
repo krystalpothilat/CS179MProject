@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//TO DO: Implement brand logos and color schemes https://www.dropbox.com/scl/fo/524c89yxb0bwhtulqraw6/h?dl=0&preview=Keoghs+Port-logos_transparent.png&rlkey=k0j63nnq24gdyomiu1v4pc76c
 //TO DO: Implement a simple animation for the step x of x screen 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,16 +12,28 @@ MainWindow::MainWindow(QWidget *parent)
     hide_elements();
     //note and user name hide
     ui->NoteInput->setVisible(false);
+    ui->NoteInput->setPlaceholderText("Enter Note Here");
     ui->UserNameInput->setVisible(false);
+    ui->UserNameInput->setPlaceholderText("Enter Name Here");
+
     ui->stackedWidget->setCurrentIndex(0);
+    QListWidgetItem *item1 = new QListWidgetItem();
+    QListWidgetItem *item2 = new QListWidgetItem();
+    Manifest = item1;
+    UserName = item2;
 }
 
 MainWindow::~MainWindow()
 {
+    ui->LoadContainerDisplay->clear();
+    ui->unLoadContainerDisplay->clear();
+    ui->UserNameDisplay->clear();
+    ui->ManifestDisplay->clear();
     delete ui;
     CurrentOperation->reset();
     delete CurrentOperation;
     clear_vectors();
+
 }
 
 // Helper Functions
@@ -187,14 +198,24 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
 void MainWindow::on_UploadManifestSelectFile_clicked()
 {
     QString qfilepath = QFileDialog::getOpenFileName(this, "Open Manifest",QDir::homePath(),"Text Files (*.txt)");
-    filepath = qfilepath.toStdString();
-    if (filepath != "") {
+    string tempfilepath = qfilepath.toStdString();
+    ui->Upload_Manifest_Confirm->setVisible(false);
+    if (tempfilepath!= "") {
+        filepath = qfilepath.toStdString();
         QFileInfo fileInfo(qfilepath);
         QString qfilename = fileInfo.fileName();
         QString qfilenameWithoutTxt = removeTxtExtension(qfilename);
         filename = qfilenameWithoutTxt.toStdString();
-        ui->ManifestDisplay->setText(qfilenameWithoutTxt);
+        Manifest->setText(qfilenameWithoutTxt);
+        if(ui->ManifestDisplay->count()==0){
+            ui->ManifestDisplay->addItem(Manifest);
+        }
         ui->Upload_Manifest_Confirm->setVisible(true);
+    }
+    else{
+        if(ui->ManifestDisplay->count()!=0){
+            Manifest->setText("");
+        }
     }
 }
 
@@ -329,12 +350,14 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 void MainWindow::on_Download_Manifest_Confirm_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-    ui->ManifestDisplay->setText("");
+    Manifest->setText("");
     time = 0;
     index = 0;
     filepath = "";
     filename = "";
     load_or_balance = ' ';
+    ui->LoadContainerDisplay->clear();
+    ui->unLoadContainerDisplay->clear();
     indexVector.clear();
     CurrentOperation->reset();
     hide_elements();
@@ -357,7 +380,10 @@ void MainWindow::on_UserNameInput_returnPressed()
         showDialog(QString::fromStdString(output));
         return;
     }
-    ui->UserNameDisplay->setText(qname);
+    UserName->setText(qname);
+    if(ui->UserNameDisplay->count()==0){
+        ui->UserNameDisplay->addItem(UserName);
+    }
     CurrentOperation->set_username(name);
     ui->UserNameInput->setText("");
     ui->UserNameInput->setVisible(false);
