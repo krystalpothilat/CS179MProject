@@ -42,10 +42,13 @@ string Operation::get_manifest_path()
     return manifest_path;
 }
 
-vector<Container *> Operation::get_containers()
+
+vector<Container*> Operation::get_NAN_containers(){
+    return NAN_containers;
+}
+
+vector<Container*> Operation::get_containers()
 {
-    //make sure all containers have been gotten before returning containers
-    //DEMO PURPOSES ONLY!!! BEGIN
     QFile file(QString::fromStdString(manifest_path));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Error oppening file: " << file.errorString();
@@ -62,20 +65,32 @@ vector<Container *> Operation::get_containers()
                           + match.captured(2).toStdString();
         int weight = match.captured(3).toInt();
         string desc = match.captured(4).toStdString();
-        if (desc != "NAN" && desc != "UNUSED") {
+        if(desc == "NAN"){ //NAN container
+            NAN_containers.push_back(new Container(location));
+        } else if (desc != "UNUSED"){ //non NAN or UNUSED
             containers.push_back(new Container(location, desc, weight));
         }
     }
     file.close();
-    // Container* container1 = new Container("s 01,02","Cat",99);
-    // containers.push_back(container1);
-    // Container* container2 = new Container("s 01,03","Dog",100);
-    // containers.push_back(container2);
-    // Container* container3 = new Container("s 01,07","Rats",-1);
-    // containers.push_back(container3);
-    //DEMO PURPOSES ONLY!! END
     return containers;
 }
+
+void Operation::set_current_container(QString s){
+    current_container_loc = s;
+}
+
+QString Operation::get_current_container(){
+    return current_container_loc;
+}
+
+void Operation::set_goal_loc(QString s){
+    current_goal_loc = s;
+};
+
+QString Operation::get_goal_loc(){
+    return current_goal_loc;
+}
+
 //Move(Container*, string, unsigned int);
 vector<Move *> Operation::get_moves()
 {

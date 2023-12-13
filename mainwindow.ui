@@ -32,7 +32,7 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-10</x>
       <y>180</y>
       <width>1611</width>
       <height>931</height>
@@ -342,6 +342,3128 @@
       </property>
       <property name="text">
        <string>Please enter the weight of the container below:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="animationbase">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>45</y>
+        <width>600</width>
+        <height>242</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>600</width>
+        <height>242</height>
+       </size>
+      </property>
+      <property name="pixmap">
+       <pixmap>animationbase.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0101">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0201">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0121">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0102">
+      <property name="geometry">
+       <rect>
+        <x>691</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0122">
+      <property name="geometry">
+       <rect>
+        <x>911</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0123">
+      <property name="geometry">
+       <rect>
+        <x>922</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0103">
+      <property name="geometry">
+       <rect>
+        <x>702</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0104">
+      <property name="geometry">
+       <rect>
+        <x>713</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0105">
+      <property name="geometry">
+       <rect>
+        <x>724</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0106">
+      <property name="geometry">
+       <rect>
+        <x>735</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0107">
+      <property name="geometry">
+       <rect>
+        <x>746</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0108">
+      <property name="geometry">
+       <rect>
+        <x>757</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0109">
+      <property name="geometry">
+       <rect>
+        <x>768</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0110">
+      <property name="geometry">
+       <rect>
+        <x>779</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0111">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0112">
+      <property name="geometry">
+       <rect>
+        <x>801</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0113">
+      <property name="geometry">
+       <rect>
+        <x>812</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0114">
+      <property name="geometry">
+       <rect>
+        <x>823</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0115">
+      <property name="geometry">
+       <rect>
+        <x>834</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0116">
+      <property name="geometry">
+       <rect>
+        <x>845</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0117">
+      <property name="geometry">
+       <rect>
+        <x>856</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0118">
+      <property name="geometry">
+       <rect>
+        <x>867</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0119">
+      <property name="geometry">
+       <rect>
+        <x>878</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0120">
+      <property name="geometry">
+       <rect>
+        <x>889</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0124">
+      <property name="geometry">
+       <rect>
+        <x>933</x>
+        <y>177</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0213">
+      <property name="geometry">
+       <rect>
+        <x>812</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0204">
+      <property name="geometry">
+       <rect>
+        <x>713</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0210">
+      <property name="geometry">
+       <rect>
+        <x>779</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0224">
+      <property name="geometry">
+       <rect>
+        <x>933</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0215">
+      <property name="geometry">
+       <rect>
+        <x>834</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0221">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0205">
+      <property name="geometry">
+       <rect>
+        <x>724</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0208">
+      <property name="geometry">
+       <rect>
+        <x>757</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0222">
+      <property name="geometry">
+       <rect>
+        <x>911</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0218">
+      <property name="geometry">
+       <rect>
+        <x>867</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0220">
+      <property name="geometry">
+       <rect>
+        <x>889</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0216">
+      <property name="geometry">
+       <rect>
+        <x>845</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0212">
+      <property name="geometry">
+       <rect>
+        <x>801</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0207">
+      <property name="geometry">
+       <rect>
+        <x>746</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0203">
+      <property name="geometry">
+       <rect>
+        <x>702</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0223">
+      <property name="geometry">
+       <rect>
+        <x>922</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0209">
+      <property name="geometry">
+       <rect>
+        <x>768</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0219">
+      <property name="geometry">
+       <rect>
+        <x>878</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0211">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0206">
+      <property name="geometry">
+       <rect>
+        <x>735</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0217">
+      <property name="geometry">
+       <rect>
+        <x>856</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0214">
+      <property name="geometry">
+       <rect>
+        <x>823</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0202">
+      <property name="geometry">
+       <rect>
+        <x>691</x>
+        <y>162</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0413">
+      <property name="geometry">
+       <rect>
+        <x>812</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0403">
+      <property name="geometry">
+       <rect>
+        <x>702</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0410">
+      <property name="geometry">
+       <rect>
+        <x>779</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0424">
+      <property name="geometry">
+       <rect>
+        <x>933</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0311">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0304">
+      <property name="geometry">
+       <rect>
+        <x>713</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0415">
+      <property name="geometry">
+       <rect>
+        <x>834</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0421">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0324">
+      <property name="geometry">
+       <rect>
+        <x>933</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0404">
+      <property name="geometry">
+       <rect>
+        <x>713</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0308">
+      <property name="geometry">
+       <rect>
+        <x>757</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0408">
+      <property name="geometry">
+       <rect>
+        <x>757</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0422">
+      <property name="geometry">
+       <rect>
+        <x>911</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0316">
+      <property name="geometry">
+       <rect>
+        <x>845</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0418">
+      <property name="geometry">
+       <rect>
+        <x>867</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0420">
+      <property name="geometry">
+       <rect>
+        <x>889</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0416">
+      <property name="geometry">
+       <rect>
+        <x>845</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0412">
+      <property name="geometry">
+       <rect>
+        <x>801</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0407">
+      <property name="geometry">
+       <rect>
+        <x>746</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0402">
+      <property name="geometry">
+       <rect>
+        <x>691</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0322">
+      <property name="geometry">
+       <rect>
+        <x>911</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0309">
+      <property name="geometry">
+       <rect>
+        <x>768</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0310">
+      <property name="geometry">
+       <rect>
+        <x>779</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0321">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0323">
+      <property name="geometry">
+       <rect>
+        <x>922</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0305">
+      <property name="geometry">
+       <rect>
+        <x>724</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0423">
+      <property name="geometry">
+       <rect>
+        <x>922</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0409">
+      <property name="geometry">
+       <rect>
+        <x>768</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0320">
+      <property name="geometry">
+       <rect>
+        <x>889</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0307">
+      <property name="geometry">
+       <rect>
+        <x>746</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0319">
+      <property name="geometry">
+       <rect>
+        <x>878</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0317">
+      <property name="geometry">
+       <rect>
+        <x>856</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0419">
+      <property name="geometry">
+       <rect>
+        <x>878</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0411">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0405">
+      <property name="geometry">
+       <rect>
+        <x>724</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0302">
+      <property name="geometry">
+       <rect>
+        <x>691</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0318">
+      <property name="geometry">
+       <rect>
+        <x>867</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0314">
+      <property name="geometry">
+       <rect>
+        <x>823</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0401">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0315">
+      <property name="geometry">
+       <rect>
+        <x>834</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0312">
+      <property name="geometry">
+       <rect>
+        <x>801</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0417">
+      <property name="geometry">
+       <rect>
+        <x>856</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0306">
+      <property name="geometry">
+       <rect>
+        <x>735</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0313">
+      <property name="geometry">
+       <rect>
+        <x>812</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0303">
+      <property name="geometry">
+       <rect>
+        <x>702</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0414">
+      <property name="geometry">
+       <rect>
+        <x>823</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0301">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>147</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="b0406">
+      <property name="geometry">
+       <rect>
+        <x>735</x>
+        <y>132</y>
+        <width>11</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0101">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0102">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0103">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0104">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0105">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0106">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0107">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0108">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0109">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0110">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0111">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0112">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>246</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0201">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0202">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0203">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0204">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0205">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0206">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0207">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0208">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0209">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0210">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0211">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0212">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>222</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0301">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0302">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0303">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0304">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0305">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0306">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0307">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0308">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0309">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0310">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0311">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0312">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>198</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0401">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0402">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0403">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0404">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0405">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0406">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0407">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0408">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0409">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0410">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0411">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0412">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>174</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0501">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0502">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0503">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0504">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0505">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0506">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0507">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0508">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0509">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0510">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0511">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0512">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>150</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0601">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0602">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0603">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0604">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0605">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0606">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0607">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0608">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0609">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0610">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0611">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0612">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>126</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0701">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0702">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0703">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0704">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0705">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0706">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0707">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0708">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0709">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0710">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0711">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0712">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>102</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0801">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0802">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0803">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0804">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0805">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0806">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0807">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0808">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0809">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0810">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0811">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0812">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>78</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0901">
+      <property name="geometry">
+       <rect>
+        <x>1040</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0902">
+      <property name="geometry">
+       <rect>
+        <x>1058</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0903">
+      <property name="geometry">
+       <rect>
+        <x>1076</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0904">
+      <property name="geometry">
+       <rect>
+        <x>1094</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0905">
+      <property name="geometry">
+       <rect>
+        <x>1112</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0906">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0907">
+      <property name="geometry">
+       <rect>
+        <x>1148</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0908">
+      <property name="geometry">
+       <rect>
+        <x>1166</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0909">
+      <property name="geometry">
+       <rect>
+        <x>1184</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0910">
+      <property name="geometry">
+       <rect>
+        <x>1202</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0911">
+      <property name="geometry">
+       <rect>
+        <x>1220</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="s0912">
+      <property name="geometry">
+       <rect>
+        <x>1238</x>
+        <y>54</y>
+        <width>18</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="buffer_xlabel1">
+      <property name="geometry">
+       <rect>
+        <x>682</x>
+        <y>195</y>
+        <width>21</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="buffer_ylabel1">
+      <property name="geometry">
+       <rect>
+        <x>673</x>
+        <y>175</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="buffer_xlabel2">
+      <property name="geometry">
+       <rect>
+        <x>933</x>
+        <y>195</y>
+        <width>21</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>24</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="buffer_ylabel2">
+      <property name="geometry">
+       <rect>
+        <x>671</x>
+        <y>130</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bufferlabel">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>100</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Buffer</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ship_xlabel1">
+      <property name="geometry">
+       <rect>
+        <x>1047</x>
+        <y>270</y>
+        <width>21</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ship_xlabel2">
+      <property name="geometry">
+       <rect>
+        <x>1242</x>
+        <y>270</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>12</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ship_ylabel1">
+      <property name="geometry">
+       <rect>
+        <x>1030</x>
+        <y>250</y>
+        <width>21</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ship_ylabel2">
+      <property name="geometry">
+       <rect>
+        <x>1030</x>
+        <y>57</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="shiplabel">
+      <property name="geometry">
+       <rect>
+        <x>1150</x>
+        <y>270</y>
+        <width>58</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Ship</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="truckborder">
+      <property name="geometry">
+       <rect>
+        <x>960</x>
+        <y>160</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
