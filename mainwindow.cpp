@@ -259,6 +259,7 @@ void MainWindow::on_LoadContainerInput_returnPressed()
         ui->UserNameInput->setText("");
         string charactersOverLimit = to_string(container.length()-MAXCHARLIMIT);
         string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        ui->LoadContainerInput->setText("");
         showDialog(QString::fromStdString(output));
         return;
     }
@@ -361,6 +362,7 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
     indexVector.clear();
     CurrentOperation->reset();
     hide_elements();
+    clear_vectors();
 }
 
 //Main Window Slots:
