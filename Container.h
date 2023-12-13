@@ -11,6 +11,7 @@ private:
     int weight; //set to negative 1 if no weight provided
 public:
     Container();
+    Container(string);
     Container(string, string, int);
     string get_location();
     string get_description();

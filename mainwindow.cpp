@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//TO DO: Implement a simple animation for the step x of x screen 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -21,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *item2 = new QListWidgetItem();
     Manifest = item1;
     UserName = item2;
+    set_up_animation();
+    currentUTCtime = QDateTime::currentDateTimeUtc();
+    pacificTimeZone = QTimeZone("America/Los_Angeles");
+    qlogpath = QString::fromStdString(logpath);
+    flashTimer = new QTimer(this);
+    // connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
+    // flashTimer->start(500);
 }
 
 MainWindow::~MainWindow()
@@ -128,21 +133,42 @@ void MainWindow::display_move(unsigned long long i)
     Container *currentContainer = to_be_completed_moves.at(i)->get_container();
     string location = " ";
     string finalLocation = " ";
+    string coord = "";
+    string coordname = "";
     if (currentContainer->get_location() == "t") {
         location = "Truck";
+        coordname = "truckborder";
     } else if (currentContainer->get_location().at(0) == 'b') {
-        location = "Buffer at " + currentContainer->get_location().substr(2, 5);
+        coord = currentContainer->get_location().substr(2, 5);
+        location = "Buffer at " + coord;
+        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
     } else {
-        location = "Ship at " + currentContainer->get_location().substr(2, 5);
+        coord = currentContainer->get_location().substr(2, 5);
+        location = "Ship at " + coord;
+        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
     }
+    set_container_style(QString::fromStdString(coordname), "chosen");
+    CurrentOperation->set_current_container(QString::fromStdString(coordname));
+
+    coord = "";
+    coordname = "";
 
     if (to_be_completed_moves.at(i)->get_final_location() == "t") {
         finalLocation = "Truck";
+        coordname = "truckborder";
     } else if (to_be_completed_moves.at(i)->get_final_location().at(0) == 'b') {
-        finalLocation = "Buffer at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        finalLocation = "Buffer at " + coord;
+        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
     } else {
+        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
         finalLocation = "Ship at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
     }
+
+    set_container_style(QString::fromStdString(coordname), "goal");
+    CurrentOperation->set_goal_loc(QString::fromStdString(coordname));
+
     moveoutput = "Step " + to_string(i + 1) + " of " + to_string(to_be_completed_moves.size()) + "\n";
     moveoutput += "Move " + currentContainer->get_description() + " from " + location + " to " + finalLocation + "\n";
     moveoutput += "Time for this move: " + to_string(to_be_completed_moves.at(i)->get_time()) + " Minutes\n";
@@ -167,6 +193,48 @@ void MainWindow::save()
     ui->Download_Manifest_Confirm->setVisible(true);
 }
 
+
+//Flashing Display Slots:
+void MainWindow::toggleLabelVisibility(){
+    toggleLabelVisibility(CurrentOperation->get_goal_loc());
+}
+void MainWindow::toggleLabelVisibility(const QString labelName){
+    QLabel *label = findChild<QLabel*>(labelName);
+    if (label) {
+        label->setVisible(!label->isVisible());
+    } else {
+        cout << "cannot find label" << endl;
+    }
+}
+
+//Log Slots:
+string MainWindow::get_date_and_time(){
+    currentTime = currentUTCtime.toTimeZone(pacificTimeZone);
+    int year = currentTime.date().year();
+    int month = currentTime.date().month();
+    int day = currentTime.date().day();
+    QString formattedDay = QString("%1").arg(day, 2, 10, QChar('0'));
+    QString formattedMinutes = currentTime.toString("mm");
+    QString formattedHours = currentTime.toString("hh");
+
+    string log_date_time = to_string(month) + "/" + formattedDay.toStdString() + "/" + to_string(year) + ": " + formattedHours.toStdString() + ":" + formattedMinutes.toStdString() + " ";
+    return log_date_time;
+}
+
+void MainWindow::updatelog(string description){
+    QFile file (qlogpath);
+    string datetime = get_date_and_time();
+    string s = datetime + description;
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)){
+        QTextStream stream(&file);
+        stream << QString::fromStdString(s) << "\n";
+        file.close();
+    } else {
+        qDebug() << "Error opening file:" << file.errorString();
+    }
+}
+
 //Main Menu Slots:
 void MainWindow::on_Main_Menu_Load_Unload_clicked()
 {
@@ -189,6 +257,9 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
     if (load_or_balance == 'l') {
         ui->stackedWidget->setCurrentIndex(2);
         get_unload_options();
+        string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
+        updatelog(description);
+        // set_NAN_containers();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
         calculate();
@@ -338,6 +409,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 {
     time -= to_be_completed_moves.at(index)->get_time();
     CurrentOperation->move_complete(index);
+    update_container_styles();
     index++;
     if (index == to_be_completed_moves.size()) {
         ui->stackedWidget->setCurrentIndex(5);
@@ -389,6 +461,7 @@ void MainWindow::on_UserNameInput_returnPressed()
     CurrentOperation->set_username(name);
     ui->UserNameInput->setText("");
     ui->UserNameInput->setVisible(false);
+    updatelog(name + " signs in");
 }
 
 void MainWindow::on_NoteInput_returnPressed()
@@ -420,6 +493,7 @@ void MainWindow::on_NoteInput_returnPressed()
     CurrentOperation->set_note(note);
     ui->NoteInput->setText("");
     ui->NoteInput->setVisible(false);
+    updatelog(note);
 }
 
 void MainWindow::on_Main_Window_Note_clicked()
@@ -430,4 +504,289 @@ void MainWindow::on_Main_Window_Note_clicked()
 void MainWindow::on_Main_Window_Sign_In_clicked()
 {
     ui->UserNameInput->setVisible(true);
+}
+
+//Set Up Animation
+void MainWindow::set_up_animation(){
+    ui->animationbase->setPixmap(QPixmap(":/images/animationbase.png"));
+    //Buffer row 1
+    ui->b0101->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0102->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0103->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0104->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0105->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0106->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0107->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0108->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0109->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0110->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0111->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0112->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0113->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0114->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0115->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0116->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0117->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0118->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0119->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0120->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0121->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0122->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0123->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0124->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Buffer row 2
+    ui->b0201->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0202->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0203->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0204->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0205->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0206->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0207->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0208->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0209->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0210->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0211->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0212->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0213->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0214->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0215->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0216->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0217->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0218->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0219->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0220->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0221->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0222->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0223->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0224->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Buffer row 3
+    ui->b0301->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0302->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0303->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0304->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0305->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0306->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0307->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0308->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0309->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0310->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0311->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0312->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0313->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0314->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0315->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0316->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0317->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0318->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0319->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0320->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0321->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0322->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0323->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0324->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Buffer row 4
+    ui->b0401->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0402->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0403->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0404->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0405->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0406->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0407->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0408->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0409->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0410->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0411->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0412->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0413->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0414->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0415->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0416->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0417->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0418->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0419->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0420->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0421->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0422->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0423->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->b0424->setStyleSheet("background-color: white; border: 1px solid black;");
+
+    //Ship row 1
+    ui->s0101->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0102->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0103->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0104->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0105->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0106->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0107->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0108->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0109->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0110->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0111->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0112->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 2
+    ui->s0201->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0202->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0203->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0204->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0205->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0206->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0207->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0208->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0209->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0210->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0211->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0212->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 3
+    ui->s0301->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0302->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0303->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0304->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0305->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0306->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0307->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0308->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0309->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0310->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0311->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0312->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 4
+    ui->s0401->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0402->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0403->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0404->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0405->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0406->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0407->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0408->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0409->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0410->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0411->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0412->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 5
+    ui->s0501->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0502->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0503->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0504->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0505->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0506->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0507->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0508->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0509->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0510->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0511->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0512->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship ro w6
+    ui->s0601->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0602->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0603->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0604->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0605->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0606->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0607->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0608->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0609->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0610->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0611->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0612->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 7
+    ui->s0701->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0702->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0703->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0704->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0705->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0706->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0707->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0708->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0709->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0710->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0711->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0712->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 8
+    ui->s0801->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0802->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0803->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0804->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0805->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0806->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0807->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0808->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0809->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0810->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0811->setStyleSheet("background-color: white; border: 1px solid black;");
+    ui->s0812->setStyleSheet("background-color: white; border: 1px solid black;");
+    //Ship row 9
+    ui->s0901->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0902->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0903->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0904->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0905->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0906->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0907->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0908->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0909->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0910->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0911->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    ui->s0912->setStyleSheet("background-color: white; border: 1px dashed gray;");
+    //Buffer coordinate labels
+    ui->buffer_xlabel1->setStyleSheet("color: black;");
+    ui->buffer_xlabel2->setStyleSheet("color: black;");
+    ui->buffer_ylabel1->setStyleSheet("color: black;");
+    ui->buffer_ylabel2->setStyleSheet("color: black;");
+    ui->bufferlabel->setStyleSheet("color: black;");
+    //Ship coordinate labels
+    ui->ship_xlabel1->setStyleSheet("color: black;");
+    ui->ship_xlabel2->setStyleSheet("color: black;");
+    ui->ship_ylabel1->setStyleSheet("color: black;");
+    ui->ship_ylabel2->setStyleSheet("color: black;");
+    ui->shiplabel->setStyleSheet("color: black;");
+
+}
+
+void MainWindow::set_container_style(const QString containerName, string type){
+    QLabel *label = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(containerName));
+    if(type == "chosen"){ //container to be moved
+        if(containerName[0] == 't'){
+            label->setStyleSheet("border:3px solid green;");
+        } else {
+            label->setStyleSheet("background-color: green;");
+        }
+    } else if (type == "goal"){ //location for container to be moved to
+        if(containerName[0] == 't'){
+            label->setStyleSheet("border:3px solid yellow;");
+        } else {
+            label->setStyleSheet("background-color: yellow;");
+        }
+        connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
+        flashTimer->start(750);
+    } else if (type == "NAN"){
+        label->setStyleSheet("background-color: grey;");
+    } else if (type == "update"){ //set location as container
+        if(containerName[0] == 't'){
+            label->setVisible(false);
+        } else {
+            label->setStyleSheet("background-color: purple;");
+        }
+    } else { //location now empty
+        if(containerName[0] == 't'){
+            label->setVisible(false);
+        } else {
+            label->setStyleSheet("background-color: white; border: 1px solid black;");
+        }
+    }
+}
+
+void MainWindow::set_NAN_containers(){
+    vector<Container*> containers = CurrentOperation->get_NAN_containers();
+    // for(std::size_t i =0; i < containers.size(); i++){
+    //     string l
+    //     QString location = QString::fromStdString(containers[i]->get_location());
+    //     set_container_style(location, "NAN");
+    // }
+}
+
+void MainWindow::update_container_styles(){
+    QString chosen = CurrentOperation->get_current_container();
+    set_container_style(chosen, "");
+    QString goal = CurrentOperation->get_goal_loc();
+    set_container_style(goal, "update");
 }
