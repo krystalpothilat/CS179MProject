@@ -334,6 +334,7 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
     indexVector.clear();
     CurrentOperation->reset();
     hide_elements();
+    clear_vectors();
 }
 
 //Main Window Slots:
