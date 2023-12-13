@@ -278,7 +278,7 @@ void MainWindow::on_weightinput_returnPressed()
 
         // Check if the integer is within the valid range
         if (weight < 1 || weight > 99999) {
-            ui->weightinput->setText(" ");
+            ui->weightinput->setText("");
             showDialog("Please enter an integer weight within the range:\n 1 - 99999 kilos.");
             return;
         }
@@ -323,17 +323,18 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 void MainWindow::on_Download_Manifest_Confirm_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-    ui->ManifestDisplay->setText(" ");
+    ui->ManifestDisplay->setText("");
     time = 0;
     index = 0;
-    filepath = " ";
-    filename = " ";
+    filepath = "";
+    filename = "";
     load_or_balance = ' ';
     ui->LoadContainerDisplay->clear();
     ui->unLoadContainerDisplay->clear();
     indexVector.clear();
     CurrentOperation->reset();
     hide_elements();
+    clear_vectors();
 }
 
 //Main Window Slots:
@@ -348,7 +349,7 @@ void MainWindow::on_UserNameInput_returnPressed()
     string name = qname.toStdString();
     ui->UserNameDisplay->setText(qname);
     CurrentOperation->set_username(name);
-    ui->UserNameInput->setText(" ");
+    ui->UserNameInput->setText("");
     ui->UserNameInput->setVisible(false);
 }
 
@@ -356,7 +357,7 @@ void MainWindow::on_NoteInput_returnPressed()
 {
     string note = ui->NoteInput->text().toStdString();
     CurrentOperation->set_note(note);
-    ui->NoteInput->setText(" ");
+    ui->NoteInput->setText("");
     ui->NoteInput->setVisible(false);
 }
 
