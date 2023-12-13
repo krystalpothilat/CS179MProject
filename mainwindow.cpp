@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 //TO DO: Implement a simple animation for the step x of x screen 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -253,7 +254,14 @@ void MainWindow::on_LoadContainerInput_returnPressed()
         ui->LoadContainerInput->setText("");
         return;
     }
-
+    string container = qcontainer.toStdString();
+    if(container.length()>MAXCHARLIMIT){
+        ui->UserNameInput->setText("");
+        string charactersOverLimit = to_string(container.length()-MAXCHARLIMIT);
+        string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        showDialog(QString::fromStdString(output));
+        return;
+    }
     QStringList invalidStrings = {"nan", "unused", "empty"};
     for (const QString &forbidden : invalidStrings) {
         if (qcontainer.toLower() == forbidden) {
@@ -267,7 +275,6 @@ void MainWindow::on_LoadContainerInput_returnPressed()
     // Valid input, add to the list and clear the input
     QListWidgetItem *item = new QListWidgetItem(qcontainer, ui->LoadContainerDisplay);
     ui->LoadContainerDisplay->addItem(item);
-    string container = qcontainer.toStdString();
     to_be_loaded.push_back(new Container("t", container, -1));
     ui->LoadContainerInput->setText("");
 }
@@ -298,7 +305,7 @@ void MainWindow::on_weightinput_returnPressed()
 
         // Check if the integer is within the valid range
         if (weight < 1 || weight > 99999) {
-            ui->weightinput->setText(" ");
+            ui->weightinput->setText("");
             showDialog("Please enter an integer weight within the range:\n 1 - 99999 kilos.");
             return;
         }
@@ -346,8 +353,8 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
     Manifest->setText("");
     time = 0;
     index = 0;
-    filepath = " ";
-    filename = " ";
+    filepath = "";
+    filename = "";
     load_or_balance = ' ';
     ui->LoadContainerDisplay->clear();
     ui->unLoadContainerDisplay->clear();
@@ -366,20 +373,50 @@ void MainWindow::on_UserNameInput_returnPressed()
         return;
     }
     string name = qname.toStdString();
+    if(name.length()>MAXCHARLIMIT){
+        ui->UserNameInput->setText("");
+        string charactersOverLimit = to_string(name.length()-MAXCHARLIMIT);
+        string output = "Name cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        showDialog(QString::fromStdString(output));
+        return;
+    }
     UserName->setText(qname);
     if(ui->UserNameDisplay->count()==0){
         ui->UserNameDisplay->addItem(UserName);
     }
     CurrentOperation->set_username(name);
-    ui->UserNameInput->setText(" ");
+    ui->UserNameInput->setText("");
     ui->UserNameInput->setVisible(false);
 }
 
 void MainWindow::on_NoteInput_returnPressed()
 {
-    string note = ui->NoteInput->text().toStdString();
+    QString qnote = ui->NoteInput->text();
+    string note = qnote.toStdString();
+    if (containsNonPrintableCharacters(qnote)||qnote.isEmpty()) {
+        ui->UserNameInput->setText("");
+        showDialog("Please enter at least one printable character.");
+        return;
+    }
+    if(note.length()>MAXCHARLIMIT){
+        int numChunks = (note.length() + MAXCHARLIMIT - 1) / MAXCHARLIMIT;
+
+        for (int i = 0; i < numChunks; ++i) {
+            int startIdx = i * MAXCHARLIMIT;
+            int endIdx = startIdx + MAXCHARLIMIT;
+            if (endIdx > note.length()) {
+                endIdx = note.length();
+            }
+
+            string chunk = note.substr(startIdx, endIdx - startIdx);
+            CurrentOperation->set_note(chunk);
+        }
+        ui->UserNameInput->setText("");
+        ui->NoteInput->setVisible(false);
+        return;
+    }
     CurrentOperation->set_note(note);
-    ui->NoteInput->setText(" ");
+    ui->NoteInput->setText("");
     ui->NoteInput->setVisible(false);
 }
 

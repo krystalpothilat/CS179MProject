@@ -28,11 +28,12 @@ public:
     vector<Move *> to_be_completed_moves;
     vector<Container *> to_be_unloaded_options;
     vector<int> indexVector;
-    string moveoutput = " ";
+    string moveoutput = "";
     char load_or_balance = ' ';
-    string filepath = " ";
-    string filename = " ";
+    string filepath = "";
+    string filename = "";
     int time = 0;
+    const int MAXCHARLIMIT = 256;
     unsigned long long index = 0;
     QListWidgetItem *UserName;
     QListWidgetItem *Manifest;
