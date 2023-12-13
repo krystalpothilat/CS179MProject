@@ -15,6 +15,7 @@ private:
     char load_or_balance; // set to l means load operation, set to b means balance
     string manifest_path; //file location of the manifest
     vector<Container*> containers; //vector of container pointers
+    vector<Container*> NAN_containers;
     vector<Move*> moves; //vector of move pointers to be completed in order index 0 = first move
 public:
     Operation();
@@ -28,6 +29,8 @@ public:
     void set_manifest_path(string);
 
     string get_manifest_path();
+
+    vector<Container*> get_NAN_containers();
 
     vector<Container*> get_containers();
 

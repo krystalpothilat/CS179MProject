@@ -6,6 +6,11 @@ Container::Container() {
     weight = -1;
 }
 
+Container::Container(string l) {
+    location = l;
+    description = "NAN";
+    weight = -1;
+}
 Container::Container(string l, string d, int w) {
     location = l;
     description = d;

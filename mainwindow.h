@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDir>
+#include <QDialog>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QListWidgetItem>
 #include <QMainWindow>
 #include "Operation.h"
 #include <QFileDialog>
@@ -12,6 +17,9 @@
 #include <QTimeZone>
 #include <QFile>
 #include <QTextStream>
+#include <QString>
+#include <QRegularExpression>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,17 +32,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    Operation* CurrentOperation;
-    vector <Container*> to_be_loaded;
-    vector <Container*> to_be_unloaded;
-    vector <Move*> to_be_completed_moves;
-    vector <Container*> to_be_unloaded_options;
-    vector <int> indexVector;
+    Operation *CurrentOperation;
+    vector<Container *> to_be_loaded;
+    vector<Container *> to_be_unloaded;
+    vector<Move *> to_be_completed_moves;
+    vector<Container *> to_be_unloaded_options;
+    vector<int> indexVector;
     string moveoutput = " ";
     char load_or_balance = ' ';
-    string filepath =" ";
+    string filepath = " ";
     string filename = " ";
-    string logpath = "/Users/krystalpothilat/Documents/Log2024.txt";
+    string logpath = ":/files/Log2024.txt";
     QString qlogpath;
     QDateTime currentUTCtime;
     QTimeZone pacificTimeZone;
@@ -43,6 +51,9 @@ public:
     unsigned long long index = 0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void showDialog(const QString &message);
+    bool containsNonPrintableCharacters(const QString &text);
+    QString removeTxtExtension(const QString &filename);
     void hide_elements();
     void clear_vectors();
     void display_move(unsigned long long i);
@@ -51,6 +62,11 @@ public:
     void save();
     string get_date_and_time();
     void updatelog(string);
+    QTimer* flashTimer;
+    QString goalContainer;
+    void set_up_animation();
+    void set_NAN_containers();
+    void set_container_style(const QString, string);
 
 private slots:
     void on_Main_Menu_Load_Unload_clicked();
@@ -84,6 +100,10 @@ private slots:
     void on_unLoadContainerDisplay_itemClicked(QListWidgetItem *item);
 
     void on_weightinput_returnPressed();
+
+    void toggleLabelVisibility();
+
+    void toggleLabelVisibility(const QString);
 
 private:
     Ui::MainWindow *ui;
