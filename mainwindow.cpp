@@ -116,6 +116,10 @@ void MainWindow::calculate()
 void MainWindow::get_unload_options()
 {
     to_be_unloaded_options = CurrentOperation->get_containers();
+    sort(to_be_unloaded_options.begin(), to_be_unloaded_options.end(),
+         [](Container* a, Container* b) {
+             return a->get_description() < b->get_description();
+         });
     for (unsigned long long i = 0; i < to_be_unloaded_options.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem();
         item->setText(QString::fromStdString(to_string(i + 1) + " " + to_be_unloaded_options.at(i)->get_description() + ". " + to_string(to_be_unloaded_options.at(i)->get_weight()) + " Kilos."));
