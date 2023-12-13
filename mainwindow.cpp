@@ -237,7 +237,7 @@ void MainWindow::on_LoadContainerInput_returnPressed()
     if(container.length()>MAXCHARLIMIT){
         ui->UserNameInput->setText("");
         string charactersOverLimit = to_string(container.length()-MAXCHARLIMIT);
-        string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\n You are over the character limit by:\n"+charactersOverLimit+" characters.";
+        string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
         showDialog(QString::fromStdString(output));
         return;
     }
