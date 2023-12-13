@@ -17,12 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    ui->LoadContainerDisplay->clear();
+    ui->unLoadContainerDisplay->clear();
     delete ui;
     CurrentOperation->reset();
     delete CurrentOperation;
     clear_vectors();
-    ui->LoadContainerDisplay->clear();
-    ui->unLoadContainerDisplay->clear();
 }
 
 // Helper Functions
