@@ -391,10 +391,10 @@ void MainWindow::on_UserNameInput_returnPressed()
 
 void MainWindow::on_NoteInput_returnPressed()
 {
-    QString qnote = ui->NoteInput->text();
+    QString qnote = ui->NoteInput->text().trimmed();
     string note = qnote.toStdString();
     if (containsNonPrintableCharacters(qnote)||qnote.isEmpty()) {
-        ui->UserNameInput->setText("");
+        ui->NoteInput->setText("");
         showDialog("Please enter at least one printable character.");
         return;
     }
@@ -411,7 +411,7 @@ void MainWindow::on_NoteInput_returnPressed()
             string chunk = note.substr(startIdx, endIdx - startIdx);
             CurrentOperation->set_note(chunk);
         }
-        ui->UserNameInput->setText("");
+        ui->NoteInput->setText("");
         ui->NoteInput->setVisible(false);
         return;
     }
