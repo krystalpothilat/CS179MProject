@@ -254,7 +254,8 @@ void MainWindow::save()
             showDialog("Please send outbound manifest to captain.");
             ui->downloadmanifestdisplay->setText(QString::fromStdString(output));
             ui->Download_Manifest_Confirm->setVisible(true);
-
+            string logmessage = "Finished a cycle. Manifest " + filename + "_OUTBOUND.txt was written to " + filepath + ", and a reminder pop-up to send the file was displayed";
+            updatelog(logmessage);
         } else {
             qDebug() << "Failed to open the file for writing:" << file.errorString();
         }
