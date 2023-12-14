@@ -5,6 +5,7 @@ using namespace std;
 #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <fstream>
 #include "Move.h"
 #include "Slot.h"
@@ -22,7 +23,7 @@ public:
     bool isGoalState(Node n, string type,int orderedWeights[]);
     vector<Move*> trace(Node n);
     int getContainerLoc(int col, Node n);
-    int getHeuristic(Node n);
+    int getHeuristic(Node n, int slotsNum);
     Node getGoalNode(Node root,int totalCols, int slotNums, string type,int orderedWeights[]);
     Search();
 };

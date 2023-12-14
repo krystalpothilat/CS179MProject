@@ -5,10 +5,13 @@ Search::Search() {
 }
 
 void Search::printState(Node n, int slotsNum){
-    for(int j=0; j<slotsNum;j++){
-        cout<<"\n"<<n.shipState[j].location<<" "<<n.shipState[j].description<<" "<<n.shipState[j].weight;
+    if(n.containerToDrop.location==""){
+        for(int j=0; j</*slotsNum*/24;j++){
+            cout<<"\n"<<n.shipState[j].location<<" "<<n.shipState[j].description<<" "<<n.shipState[j].weight;
+        }
+    }else{
+        cout<<"\nlocation of container to drop:"<<n.containerToDrop.location;
     }
-    //cout<<"\n\nlocation of container to drop:"<<n.containerToDrop->location;*/
 }
 
 int Search::getEmptyLoc(int col, Node n){
@@ -129,6 +132,8 @@ vector<Node> Search::expand(Node n, int totalCols, int slotsNum){
                 newNode.containerToDrop.location="";
                 newNode.parent=&n;
 
+                newNodes.push_back(newNode);
+
             }
         }
     }
@@ -153,16 +158,29 @@ bool Search::isGoalState(Node n, string type, int orderedWeights[]){
             //check if balanced, if yes then return true
             if(type=="normal balance"){
                 int portSideWeight=0;
-                for(int i=0;i<48;i++){
-                    portSideWeight+=stoi(n.shipState[i].weight);
+                for(int i=0;i<9;i++){
+                    portSideWeight+=stoi(n.shipState[i*12].weight);
+                    portSideWeight+=stoi(n.shipState[(i*12)+1].weight);
+                    portSideWeight+=stoi(n.shipState[(i*12)+2].weight);
+                    portSideWeight+=stoi(n.shipState[(i*12)+3].weight);
+                    portSideWeight+=stoi(n.shipState[(i*12)+4].weight);
+                    portSideWeight+=stoi(n.shipState[(i*12)+5].weight);
                 }
                 int starSideWeight=0;
-                for(int j=48;j<96;j++){
-                    starSideWeight+=stoi(n.shipState[j].weight);
+                for(int j=0;j<9;j++){
+                    starSideWeight+=stoi(n.shipState[(j*12)+6].weight);
+                    starSideWeight+=stoi(n.shipState[(j*12)+7].weight);
+                    starSideWeight+=stoi(n.shipState[(j*12)+8].weight);
+                    starSideWeight+=stoi(n.shipState[(j*12)+9].weight);
+                    starSideWeight+=stoi(n.shipState[(j*12)+10].weight);
+                    starSideWeight+=stoi(n.shipState[(j*12)+11].weight);
                 }
                 if(portSideWeight==0&&starSideWeight==0){ //ship is empty
                     return true;
                 }else if(((double)min(portSideWeight,starSideWeight)/(double)max(portSideWeight,starSideWeight))>=0.9){
+                    cout<<"\n normal goal\n";
+                    cout<<"star: "<<starSideWeight;
+                    cout<<"\n port: "<<portSideWeight;
                     return true;
                 }
             }else if(type=="sift"){
@@ -229,11 +247,33 @@ bool Search::isGoalState(Node n, string type, int orderedWeights[]){
 vector<Move*> Search::trace(Node n){
     //trace and convert to move objects
     vector<Move*> moves;
+    Node* currNode = &n;
+    while(currNode->parent!=NULL){
+        moves.push_back(currNode->operation);
+        currNode=currNode->parent;
+    }
+    reverse(moves.begin(), moves.end());
     return moves;
 }
 
-int Search::getHeuristic(Node n){
+int Search::getHeuristic(Node n, int slotsNum){
     //see slides?
+    //sort all mases on the right side
+    //calculate mass of both sides
+    //Balance mass = left + right
+    //compute the deficit of the smaller side
+    //slide down the list, to the first value <= deficit
+    //deficit-prevFoundValue = new Def
+    // contue previous 2 steps until new def satisfied?
+    //get count of how many containers had to be moved to get that value
+    //get closet available col for each container
+    //add everything together
+    int rightSideSum=0;
+    for(int i=0;i<8;i++){ //sum of "correctly placed" right side
+        rightSideSum+=stoi(n.shipState[0].weight);
+
+    }
+
     return 0;
 }
 
@@ -246,26 +286,34 @@ Node Search::getGoalNode(Node root, int totalCols, int slotsNum, string type, in
     while(!queue.empty()){
         minPos = 0;
         for(int k=0;k<queue.size();k++){
-            queue[k].heuristic_h = getHeuristic(queue[k]);
+            //queue[k].heuristic_h = getHeuristic(queue[k]);
+            queue[k].heuristic_h = 0;
             queue[k].totalCost_f = queue[k].heuristic_h+ queue[k].cost_g;
             if(queue[k].totalCost_f < queue[minPos].totalCost_f){
                 minPos=k;
             }
         }
         currNode=queue[minPos];
+        cout<<"\npopping a node\n";
+        printState(currNode,slotsNum);
         queue.erase(queue.begin()+minPos);
 
         if(isGoalState(currNode,type,orderedWeights)){
+            cout<<"\ngoal node found!\n";
             return currNode;
         }else{
             expandedNodeOptions=expand(currNode, totalCols, slotsNum);
+            cout<<"\nexapnded nodes:\n";
             for(int i=0; i<expandedNodeOptions.size();i++){
+                printState(expandedNodeOptions[i],slotsNum);
+                cout<<"\n";
                 queue.push_back(expandedNodeOptions[i]);
             }
          }
     }
 
     currNode.notValid=true; //no goal state found
+    cout<<"\nno goal state found\n";
     return currNode;
 }
 
@@ -314,8 +362,10 @@ vector<Move*> Search::getMovesList(){
     root.parent=NULL;
 
     int temp[0];
+    cout<<"test";
     Node goal = getGoalNode(root, totalCols, slotsNum, "normal balance", temp);
-    if(goal.notValid){
+    /*if(goal.notValid){
+        cout<<"\nDoing SIFT...\n";
         int orderedWeights[96];
         for (int c = 0; c < 96; c++) {
             orderedWeights[c]=stoi(slotsArray[c].weight);
@@ -327,10 +377,20 @@ vector<Move*> Search::getMovesList(){
                     swap(orderedWeights[j], orderedWeights[j + 1]);
 
         goal = getGoalNode(root, totalCols, slotsNum, "sift",orderedWeights);
-    }
+    }*/
     //call trace function
-    //put in correct format
+    return trace(goal);
+
+    /*Container* container1 = new Container("s 01,02","Cat",99);
+    Container* container2 = new Container("s 01,03","Dog",100);
+    Container* container3 = new Container("s 01,07","Rats",-1);
+    Move *move1 = new Move(container1, "b 01,01", 7);
+    moves.push_back(move1);
+    Move *move2 = new Move(container2, "t", 8);
+    moves.push_back(move2);
+    Move *move3 = new Move(container3, "s 01,05", 5);
+    moves.push_back(move3);
 
 
-    return moves;
+    return moves;*/
 }

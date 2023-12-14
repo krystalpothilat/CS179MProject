@@ -100,15 +100,13 @@ vector<Move *> Operation::get_moves()
     //Malina testing
     Search t;
     t.manifestPath=get_manifest_path();
+    moves= t.getMovesList();
     //cout<<"\nSeach path: "<< t.manifestPath;
     //t.getMovesList();
-    string test="00900";
-    int w=stoi(test);
-    cout<<"converted: "<<w;
 
 
     //DEMO PURPOSES ONLY!!! BEGIN
-    Container* container1 = new Container("s 01,02","Cat",99);
+    /*Container* container1 = new Container("s 01,02","Cat",99);
     Container* container2 = new Container("s 01,03","Dog",100);
     Container* container3 = new Container("s 01,07","Rats",-1);
     Move *move1 = new Move(container1, "b 01,01", 7);
@@ -116,7 +114,7 @@ vector<Move *> Operation::get_moves()
     Move *move2 = new Move(container2, "t", 8);
     moves.push_back(move2);
     Move *move3 = new Move(container3, "s 01,05", 5);
-    moves.push_back(move3);
+    moves.push_back(move3);*/
     //DEMO PURPOSES ONLY!!! END
 
     return moves;
