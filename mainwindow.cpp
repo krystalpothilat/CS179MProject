@@ -122,64 +122,146 @@ void MainWindow::display_move(unsigned long long i)
     Container *currentContainer = to_be_completed_moves.at(i)->get_container();
     string location = " ";
     string finalLocation = " ";
-    string coord = "";
-    string coordname = "";
+    string chosen_coord;
+    string chosen_coord_format;
+    string chosen_coordname;
+    string goal_coord;
+    string goal_coord_format;
+    string goal_coordname;
+    int manifest_line_chosen;
+    int manifest_line_goal;
+
     if (currentContainer->get_location() == "t") {
         location = "Truck";
-        coordname = "truckborder";
+        chosen_coordname = "truckborder";
     } else if (currentContainer->get_location().at(0) == 'b') {
-        coord = currentContainer->get_location().substr(2, 5);
-        location = "Buffer at " + coord;
-        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
+        chosen_coord = currentContainer->get_location().substr(2, 5);
+        chosen_coord_format = chosen_coord.substr(0,2) + chosen_coord.substr(3,2);
+        location = "Buffer at " + chosen_coord;
+        chosen_coordname = "b" + chosen_coord_format;
     } else {
-        coord = currentContainer->get_location().substr(2, 5);
-        location = "Ship at " + coord;
-        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
+        chosen_coord = currentContainer->get_location().substr(2, 5);
+        chosen_coord_format = chosen_coord.substr(0,2) + chosen_coord.substr(3,2);
+        location = "Ship at " + chosen_coord;
+        chosen_coordname = "s" + chosen_coord_format;
     }
-    set_container_style(QString::fromStdString(coordname), "chosen");
-    CurrentOperation->set_current_container(QString::fromStdString(coordname));
 
-    coord = "";
-    coordname = "";
+    set_container_style(QString::fromStdString(chosen_coordname), "chosen");
+    CurrentOperation->set_current_container(QString::fromStdString(chosen_coordname));
+
+    if(chosen_coordname != "truckborder"){
+        manifest_line_chosen = to_line_index(chosen_coord_format);
+    }
 
     if (to_be_completed_moves.at(i)->get_final_location() == "t") {
         finalLocation = "Truck";
-        coordname = "truckborder";
+        goal_coordname = "truckborder";
     } else if (to_be_completed_moves.at(i)->get_final_location().at(0) == 'b') {
-        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
-        finalLocation = "Buffer at " + coord;
-        coordname = "b" + coord.substr(0,2) + coord.substr(3,2);
+        goal_coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        goal_coord_format = goal_coord.substr(0,2) + goal_coord.substr(3,2);
+        finalLocation = "Buffer at " + goal_coord;
+        goal_coordname = "b" + goal_coord_format;
     } else {
-        coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        goal_coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
+        goal_coord_format = goal_coord.substr(0,2) + goal_coord.substr(3,2);
         finalLocation = "Ship at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
-        coordname = "s" + coord.substr(0,2) + coord.substr(3,2);
+        goal_coordname = "s" + goal_coord_format;
     }
 
-    set_container_style(QString::fromStdString(coordname), "goal");
-    CurrentOperation->set_goal_loc(QString::fromStdString(coordname));
+    set_container_style(QString::fromStdString(goal_coordname), "goal");
+    CurrentOperation->set_goal_loc(QString::fromStdString(goal_coordname));
+
+    if(goal_coordname != "truckborder"){
+        manifest_line_goal = to_line_index(goal_coord_format);
+    }
 
     moveoutput = "Step " + to_string(i + 1) + " of " + to_string(to_be_completed_moves.size()) + "\n";
     moveoutput += "Move " + currentContainer->get_description() + " from " + location + " to " + finalLocation + "\n";
     moveoutput += "Time for this move: " + to_string(to_be_completed_moves.at(i)->get_time()) + " Minutes\n";
     moveoutput += "Time remaining: " + to_string(time) + " Minutes\n";
     ui->stepxofxdisplay->setText(QString::fromStdString(moveoutput));
+    QString userInputWeight = "";
     if (currentContainer->get_weight() == -1) {
         ui->weightinput->setVisible(true);
         ui->weightprompt->setVisible(true);
+        userInputWeight = ui->weightinput->text();
     } else {
-        moveoutput += "Weight: " + to_string(currentContainer->get_weight()) + " Kilograms";
+        userInputWeight = QString::number(currentContainer->get_weight());
+        moveoutput += "Weight: " + userInputWeight.toStdString() + " Kilograms";
         ui->stepxofxdisplay->setText(QString::fromStdString(moveoutput));
         ui->Step_X_of_X_Confirm->setVisible(true);
     }
+
+    //format log message for move update
+    moveLogMessage = "Container " + currentContainer->get_description() + ", weighing " + userInputWeight.toStdString() + " kilos has been moved from ";
+    if(location.substr(0,4) == "Ship"){ //container moved from location on ship
+        update_manifest(manifest_line_chosen, "UNUSED", 0);
+        moveLogMessage += "[" + chosen_coord + "] on Ship to ";
+    } else if (location == "Truck") { //moved from truck
+        moveLogMessage += "truck to ";
+    } else { //moved from buffer
+        moveLogMessage += "[" + chosen_coord + "] on buffer to ";
+    }
+
+    if(finalLocation.substr(0,4) == "Ship"){ //container moved to location on ship
+        update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
+        moveLogMessage += "[" + goal_coord + "] on Ship";
+    } else if (finalLocation == "Truck"){ //moved to truck
+        moveLogMessage += "truck";
+    } else { //moved to buffer
+        moveLogMessage += "[" + goal_coord + "] on buffer";
+    }
+}
+
+//Add leading zeros to container measurements
+string MainWindow::appendLeadingZeros(string input, int width) {
+    ostringstream oss;
+    oss << setw(width) << setfill('0') << input;
+    return oss.str();
+}
+
+//Get index of line in manifest
+int MainWindow::to_line_index(string s){
+    int row = std::stoi(s.substr(0,2));
+    int col = std::stoi(s.substr(2,2));
+    return ( ((row-1) * 12) + col - 1);
+}
+
+//Get coordinates from index of line in manifest
+string MainWindow::to_coordinates(int i){
+    int row = ((i+1)/12) + 1;
+    int col = (i+1) % 12;
+    return appendLeadingZeros(to_string(row), 2) + "," + appendLeadingZeros(to_string(col), 2);
 }
 
 void MainWindow::save()
 {
-    filepath = CurrentOperation->get_manifest_path();
-    string output = "Manifest: " + filename + "_OUTBOUND has been saved to:\n " + filepath ;
-    showDialog("Please send outbound manifest to captain.");
-    ui->downloadmanifestdisplay->setText(QString::fromStdString(output));
-    ui->Download_Manifest_Confirm->setVisible(true);
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    if(!desktopPath.isEmpty()){
+        QString newFilePath = desktopPath  + QString::fromStdString("/" + filename + "_OUTBOUND.txt");
+        QFile file(newFilePath);
+
+        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream out(&file);
+            QStringList list = CurrentOperation->get_manifestlines();
+            for(const QString& line : list){
+                out << line << "\n";
+            }
+
+            file.close();
+            filepath = newFilePath.toStdString();
+            string output = "Manifest: " + filename + "_OUTBOUND.txt has been saved to:\n " + filepath;
+            showDialog("Please send outbound manifest to captain.");
+            ui->downloadmanifestdisplay->setText(QString::fromStdString(output));
+            ui->Download_Manifest_Confirm->setVisible(true);
+
+        } else {
+            qDebug() << "Failed to open the file for writing:" << file.errorString();
+        }
+    } else {
+        qDebug() << "Failed to get the desktop path.";
+    }
+
 }
 
 
@@ -196,7 +278,7 @@ void MainWindow::toggleLabelVisibility(const QString labelName){
     }
 }
 
-//Log Slots:
+//Log:
 string MainWindow::get_date_and_time(){
     currentTime = currentUTCtime.toTimeZone(pacificTimeZone);
     int year = currentTime.date().year();
@@ -222,6 +304,13 @@ void MainWindow::updatelog(string description){
     } else {
         qDebug() << "Error opening file:" << file.errorString();
     }
+}
+
+//Manifest Updates:
+void MainWindow::update_manifest(int i, string desc, int weight){
+    string coord = to_coordinates(i);
+    string line = "[" + coord + "], {" + appendLeadingZeros(to_string(weight), 5) + "}, " + desc;
+    CurrentOperation->set_manifest_line(i, QString::fromStdString(line));
 }
 
 //Main Menu Slots:
@@ -262,8 +351,10 @@ void MainWindow::on_UploadManifestSelectFile_clicked()
     if (filepath != "") {
         QFileInfo fileInfo(qfilepath);
         QString qfilename = fileInfo.fileName();
+        cout << qfilename.toStdString() << endl;
         QString qfilenameWithoutTxt = removeTxtExtension(qfilename);
         filename = qfilenameWithoutTxt.toStdString();
+        cout << filename << endl;
         ui->ManifestDisplay->setText(qfilenameWithoutTxt);
         ui->Upload_Manifest_Confirm->setVisible(true);
     }
@@ -382,6 +473,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
     time -= to_be_completed_moves.at(index)->get_time();
     CurrentOperation->move_complete(index);
     update_container_styles();
+    updatelog(moveLogMessage);
     index++;
     if (index == to_be_completed_moves.size()) {
         ui->stackedWidget->setCurrentIndex(5);
@@ -721,7 +813,6 @@ void MainWindow::set_NAN_containers(){
         string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
         QString location = QString::fromStdString(loc_format);
         set_container_style(location, "NAN");
-        cout << "nan container" << endl;
     }
 }
 

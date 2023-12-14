@@ -21,6 +21,8 @@
 #include <QRegularExpression>
 #include <QTimer>
 #include <QObject>
+#include <QStandardPaths>
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -43,13 +45,14 @@ public:
     char load_or_balance = ' ';
     string filepath = " ";
     string filename = " ";
-    string logpath = ":/files/Log2024.txt";
+    string logpath = "/Users/krystalpothilat/Documents/Log2024.txt";
     QString qlogpath;
     QDateTime currentUTCtime;
     QTimeZone pacificTimeZone;
     QDateTime currentTime;
     int time = 0;
     unsigned long long index = 0;
+    string moveLogMessage;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void showDialog(const QString &message);
@@ -68,6 +71,10 @@ public:
     void set_NAN_containers();
     void set_container_style(const QString, string);
     void update_container_styles();
+    int to_line_index(string);
+    string to_coordinates(int);
+    void update_manifest(int, string, int);
+    string appendLeadingZeros(string, int);
 
 private slots:
     void on_Main_Menu_Load_Unload_clicked();

@@ -20,7 +20,6 @@ void Operation::set_note(string n)
 {
     note = n;
     cout << "Note Set: " << note << endl;
-    //update log
 }
 
 void Operation::set_load_or_balance(char a)
@@ -33,16 +32,20 @@ void Operation::set_manifest_path(string path)
 {
     manifest_path = path;
     cout << "Path set: " << path << endl;
-    //update log stating manifest was opened
 }
 
 string Operation::get_manifest_path()
 {
-    //make sure new manifest has been saved to new location before returning the path
-    //DEMO PURPOSES ONLY: MANIFEST SAVED TO SAME LOCATION
     return manifest_path;
 }
 
+QStringList Operation::get_manifestlines(){
+    return manifestlines;
+}
+
+void Operation::set_manifest_line(int i, QString line){
+    manifestlines[i] = line;
+}
 
 vector<Container*> Operation::get_NAN_containers(){
     return NAN_containers;
@@ -59,8 +62,10 @@ vector<Container*> Operation::get_containers()
 
     QRegularExpression regex("\\[([^,]+),([^\\]]+)\\], \\{([^\\}]+)\\}, (.+)");
     QRegularExpressionMatch match;
-    while (!in.atEnd()) {
+    while (!(in.atEnd())){
         QString line = in.readLine();
+        cout << line.toStdString() << endl;
+        manifestlines.append(line);
         match = regex.match(line);
         string location = "s " + match.captured(1).toStdString() + ","
                           + match.captured(2).toStdString();

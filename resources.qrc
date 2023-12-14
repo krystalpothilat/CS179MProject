@@ -2,7 +2,4 @@
     <qresource prefix="/images">
         <file>animationbase.png</file>
     </qresource>
-    <qresource prefix="/files">
-        <file>Log2024.txt</file>
-    </qresource>
 </RCC>
