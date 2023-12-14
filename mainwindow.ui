@@ -140,7 +140,7 @@
      <bool>true</bool>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="A_Main_Menu">
      <widget class="QPushButton" name="Main_Menu_Load_Unload">
@@ -249,6 +249,9 @@
         <pointsize>18</pointsize>
        </font>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="C_Select_Unload">
@@ -304,6 +307,9 @@
        <font>
         <pointsize>18</pointsize>
        </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
      </widget>
      <widget class="QLabel" name="waitlabel">
@@ -380,24 +386,6 @@
       </property>
       <property name="text">
        <string>Confirm</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="stepxofxdisplay">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>1231</width>
-        <height>271</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Step X of X:</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="weightinput">
@@ -3558,6 +3546,27 @@
        <string/>
       </property>
      </widget>
+     <widget class="QTextEdit" name="stepxofxdisplay">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>621</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::NoTextInteraction</set>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="G_Download_Manifest">
      <widget class="QPushButton" name="Download_Manifest_Confirm">
@@ -3578,13 +3587,13 @@
        <string>Confirm</string>
       </property>
      </widget>
-     <widget class="QLabel" name="downloadmanifestdisplay">
+     <widget class="QTextEdit" name="downloadmanifestdisplay">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>1231</width>
-        <height>311</height>
+        <x>50</x>
+        <y>50</y>
+        <width>1191</width>
+        <height>291</height>
        </rect>
       </property>
       <property name="font">
@@ -3592,8 +3601,11 @@
         <pointsize>24</pointsize>
        </font>
       </property>
-      <property name="text">
-       <string>Please wait while manifest file is being saved . . .</string>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextSelectableByMouse</set>
       </property>
      </widget>
     </widget>
@@ -3748,6 +3760,9 @@
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="QListWidget" name="ManifestDisplay">
        <property name="sizePolicy">
