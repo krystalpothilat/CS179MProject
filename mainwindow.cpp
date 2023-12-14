@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     pacificTimeZone = QTimeZone("America/Los_Angeles");
     qlogpath = QString::fromStdString(logpath);
     flashTimer = new QTimer(this);
-    // connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
-    // flashTimer->start(500);
 }
 
 MainWindow::~MainWindow()
@@ -120,6 +118,7 @@ void MainWindow::get_unload_options()
 void MainWindow::display_move(unsigned long long i)
 {
     ui->Step_X_of_X_Confirm->setVisible(false);
+    disconnect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
     Container *currentContainer = to_be_completed_moves.at(i)->get_container();
     string location = " ";
     string finalLocation = " ";
@@ -249,7 +248,7 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
         get_unload_options();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
-        // set_NAN_containers();
+        set_NAN_containers();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
         calculate();
@@ -717,11 +716,13 @@ void MainWindow::set_container_style(const QString containerName, string type){
 
 void MainWindow::set_NAN_containers(){
     vector<Container*> containers = CurrentOperation->get_NAN_containers();
-    // for(std::size_t i =0; i < containers.size(); i++){
-    //     string l
-    //     QString location = QString::fromStdString(containers[i]->get_location());
-    //     set_container_style(location, "NAN");
-    // }
+    for(int i =0; i < containers.size(); i++){
+        string loc = containers[i]->get_location();
+        string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
+        QString location = QString::fromStdString(loc_format);
+        set_container_style(location, "NAN");
+        cout << "nan container" << endl;
+    }
 }
 
 void MainWindow::update_container_styles(){

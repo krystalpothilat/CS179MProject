@@ -20,6 +20,7 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QTimer>
+#include <QObject>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
