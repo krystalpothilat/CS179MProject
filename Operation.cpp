@@ -1,6 +1,7 @@
 #include "Operation.h"
 #include "QtCore/qdebug.h"
 #include "Search.h"
+#include "mainwindow.h"
 
 Operation::Operation()
 {
@@ -71,6 +72,7 @@ vector<Container*> Operation::get_containers()
         } else if (desc != "UNUSED"){ //non NAN or UNUSED
             containers.push_back(new Container(location, desc, weight));
         }
+
     }
     file.close();
     return containers;
@@ -104,7 +106,7 @@ vector<Move *> Operation::get_moves()
     //t.getMovesList();
     string test="00900";
     int w=stoi(test);
-    cout<<"converted: "<<w;
+    cout<<"converted: "<< w << endl;
 
 
     //DEMO PURPOSES ONLY!!! BEGIN
@@ -146,6 +148,7 @@ void Operation::move_complete(unsigned long long a)
     cout << "Move " << a + 1 << " has been completed" << endl;
     //update log and manfiest that move at index a of the vector moves is complete
 }
+
 
 void Operation::reset()
 {

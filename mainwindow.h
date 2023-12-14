@@ -65,8 +65,9 @@ public:
     void updatelog(string);
     QTimer* flashTimer;
     void set_up_animation();
-    void set_NAN_containers();
+    void initial_container_setup();
     void set_container_style(const QString, string);
+    QString get_border_type(int, int, string);
     void update_container_styles();
 
 private slots:
