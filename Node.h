@@ -7,9 +7,9 @@
 class Node
 {
 public:
-    Slot shipState[108];
+    Slot shipState[204];
     Slot containerToDrop;
-    Node* parent=NULL;
+    Node* parent;
     int totalCost_f=0;
     int cost_g=0;
     int heuristic_h=0;
@@ -17,7 +17,6 @@ public:
     Move* operation=NULL;
 
     Node();
-    void test(Slot shipState[]);
 };
 
 #endif // NODE_H

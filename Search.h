@@ -17,14 +17,15 @@ class Search
 public:
     string manifestPath;
     vector<Move*>getMovesList();
-    void printState(Node n, int slotsNum);
-    vector<Node> expand(Node n, int totalCols, int slotsNum);
-    int getEmptyLoc(int col, Node n);
-    bool isGoalState(Node n, string type,int orderedWeights[]);
-    vector<Move*> trace(Node n);
-    int getContainerLoc(int col, Node n);
-    int getHeuristic(Node n, int slotsNum);
-    Node getGoalNode(Node root,int totalCols, int slotNums, string type,int orderedWeights[]);
+    void printState(Node* n, int slotsNum);
+    vector<Node*> expand(Node* n, int totalCols, int slotsNum, vector<Node*> alreadyExpanded);
+    int getEmptyLoc(int col, Node* n);
+    bool isGoalState(Node* n, string type,int orderedWeights[]);
+    vector<Move*> trace(Node* n);
+    int getContainerLoc(int col, Node* n);
+    int getHeuristic(Node* n, int slotsNum);
+    Node* getGoalNode(Node* root,int totalCols, int slotNums, string type,int orderedWeights[]);
+    bool isSameNode(Node* newNode, Node* n, int slotsNum);
     Search();
 };
 
