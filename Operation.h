@@ -19,6 +19,8 @@ private:
     vector<Move*> moves; //vector of move pointers to be completed in order index 0 = first move
     QString current_container_loc;
     QString current_goal_loc;
+    vector<Container *> containersToLoad;
+    vector<Container *> containersToUnload;
 public:
     Operation();
 

@@ -16,6 +16,9 @@ public:
     bool notValid=false;
     Move* operation=NULL;
 
+    vector<Container *> containersToLoad;
+    vector<Container *> containersToUnload;
+
     Node();
 };
 
