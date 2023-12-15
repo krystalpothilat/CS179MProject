@@ -7,17 +7,19 @@
 class Node
 {
 public:
-    Slot shipState[108];
+    Slot shipState[204];
     Slot containerToDrop;
-    Node* parent=NULL;
+    Node* parent;
     int totalCost_f=0;
     int cost_g=0;
     int heuristic_h=0;
     bool notValid=false;
     Move* operation=NULL;
 
+    vector<Container *> containersToLoad;
+    vector<Container *> containersToUnload;
+
     Node();
-    void test(Slot shipState[]);
 };
 
 #endif // NODE_H
