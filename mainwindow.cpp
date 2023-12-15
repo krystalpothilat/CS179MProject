@@ -354,8 +354,10 @@ void MainWindow::updatelog(string description){
 
 //Manifest Updates:
 void MainWindow::update_manifest(int i, string desc, int weight){
+    cout << "update_manifest" << endl;
     string coord = to_coordinates(i);
     string line = "[" + coord + "], {" + appendLeadingZeros(to_string(weight), 5) + "}, " + desc;
+    cout << "new manifest line : " << line << endl;
     CurrentOperation->set_manifest_line(i, QString::fromStdString(line));
 }
 
@@ -512,7 +514,6 @@ void MainWindow::on_weightinput_returnPressed()
 
         // Set the weight for the current container
         currentContainer->set_weight(weight);
-        emit weightUpdated(weight);
 
         // Update UI and display information
         moveoutput += "Weight: " + to_string(currentContainer->get_weight()) + " Kilograms";

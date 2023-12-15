@@ -45,7 +45,9 @@ QStringList Operation::get_manifestlines(){
 }
 
 void Operation::set_manifest_line(int i, QString line){
+    cout << "setting manifest line" << endl;
     manifestlines[i] = line;
+    cout << "done setting manifest line" << endl;
 }
 
 vector<Container*> Operation::get_NAN_containers(){
