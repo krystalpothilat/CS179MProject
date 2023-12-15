@@ -3,6 +3,8 @@
 using namespace std;
 #include <string>
 #include <iostream>
+#include <sstream>
+
 class Container {
 
 private:
