@@ -361,9 +361,9 @@ vector<Move*> Search2::trace(Node* n){
 
 int Search2::getHeuristic(Node* n, int slotsNum){
     //for each containr to be unloaded
-        //+2 + how many cols away from 01(portal to truck)
+    //+2 + how many cols away from 01(portal to truck)
     //for each container to be loaded
-        //+2 + how many cols away from first
+    //+2 + how many cols away from first
     return 0;
 }
 
@@ -574,4 +574,3 @@ vector<Move*> Search2::getMovesList(vector<Container *> containersToLoad, vector
 
     return moves;
 }
-
