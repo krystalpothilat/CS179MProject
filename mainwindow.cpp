@@ -525,7 +525,7 @@ void MainWindow::on_NoteInput_returnPressed()
     CurrentOperation->set_note(note);
     ui->NoteInput->setText("");
     ui->NoteInput->setVisible(false);
-    updatelog(note);
+    updatelog("NOTE: " + note);
 }
 
 void MainWindow::on_Main_Window_Note_clicked()
