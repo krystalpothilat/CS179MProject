@@ -720,13 +720,14 @@ void MainWindow::set_container_style(const QString containerName, string type){
         border = get_border_type(containerName.mid(1,2).toInt(), containerName.mid(3,2).toInt(), containerName.mid(0,1).toStdString());
     }
     if(type == "chosen"){ //container to be moved
+        cout << "setting chosen" << endl;
         if(containerName[0] == 't'){
             label->setStyleSheet("border:3px solid #51E260;");
         } else {
-
             label->setStyleSheet("background-color: #51E260;" + border);
         }
     } else if (type == "goal"){ //location for container to be moved to
+        cout << "setting goal" << endl;
         if(containerName[0] == 't'){
             label->setStyleSheet("border:3px solid #F7F02B;");
         } else {
@@ -735,14 +736,17 @@ void MainWindow::set_container_style(const QString containerName, string type){
         connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
         flashTimer->start(750);
     } else if (type == "NAN"){
+        cout << "setting NAN" << endl;
         label->setStyleSheet("background-color: #C9C9C9;" + border);
     } else if (type == "set"){ //set location as container
+        cout << "setting container" << endl;
         if(containerName[0] == 't'){
             label->setVisible(false);
         } else {
             label->setStyleSheet("background-color: #498E93;" + border);
         }
     } else { //location now empty
+        cout << "setting to empty" << endl;
         if(containerName[0] == 't'){
             label->setVisible(false);
         } else {
@@ -752,15 +756,16 @@ void MainWindow::set_container_style(const QString containerName, string type){
 }
 
 void MainWindow::initial_container_setup(){
+    cout << "initial container setup" << endl;
     vector<Container*> containers = CurrentOperation->get_NAN_containers();
-    for(int i =0; i < containers.size(); i++){
+    for(size_t i =0; i < containers.size(); i++){
         string loc = containers[i]->get_location();
         string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
         QString location = QString::fromStdString(loc_format);
         set_container_style(location, "NAN");
     }
     containers = CurrentOperation->get_containers();
-    for(int i =0; i < containers.size(); i++){
+    for(size_t i=0; i < containers.size(); i++){
         string loc = containers[i]->get_location();
         string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
         QString location = QString::fromStdString(loc_format);
@@ -771,22 +776,30 @@ void MainWindow::initial_container_setup(){
 QString MainWindow::get_border_type(int row, int col, string loc){\
     if(loc == "s"){
         if (row == 8 && col == 12){
+            cout << "ship border top right" << endl;
             return "border: 0.5px solid black;";
         } else if (col == 12) {
+            cout << "ship right border" << endl;
             return "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
         } else  if (row == 8){
+            cout << "ship top row border" << endl;
             return "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
         } else {
+            cout << "ship any other" << endl;
             return "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
         }
     } else if (loc == "b"){
         if( row == 4 && col == 24){
+            cout << "buffer border top right" << endl;
             return "border: 0.5px solid black;";
         }else if (col == 24) {
+            cout << "buffer right border" << endl;
             return "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
         } else  if (row == 4){
+            cout << "buffer top row border" << endl;
             return "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
         } else {
+            cout << "buffer any other" << endl;
             return "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
         }
     }
