@@ -26,6 +26,7 @@ public:
     int getHeuristic(Node* n, int slotsNum);
     Node* getGoalNode(Node* root,int totalCols, int slotNums, string type,int orderedWeights[]);
     bool isSameNode(Node* newNode, Node* n, int slotsNum);
+    int traceCost(Node* n);
     Search();
 };
 

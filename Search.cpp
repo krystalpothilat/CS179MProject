@@ -126,6 +126,9 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                 newNode->containerToDrop.weight=n->shipState[containerLoc].weight;
                 newNode->containerToDrop.arrayLoc=containerLoc;
                 newNode->operation = NULL;
+                newNode->cost_g=n->cost_g;
+                //newNode->costNoH+=newNode->cost_g;
+                newNode->depth=n->depth+1;
                 //newNode.parent=n;
                 for(int j=0; j<slotsNum;j++){
                     newNode->shipState[j]=n->shipState[j];
@@ -174,7 +177,7 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                 }
                 int cost=0;
                 if(finalLoc.at(0)=='s' && currLoc.at(0)=='s'){ //inside ship move
-                    cout<<"\nfinalLocX: "<<finalLocX<< "    currLocX: "<<currLocX;
+                    //cout<<"\nfinalLocX: "<<finalLocX<< "    currLocX: "<<currLocX;
                     //get highest occupied slot col between the 2 cols
                     int highestOpenSpotToCollide=-1;
                     for(int i=0; i<abs(finalLocX-currLocX)-1;i++){
@@ -236,6 +239,8 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                     }
                 }
                 newNode->cost_g=cost;
+                newNode->costNoH+=cost;
+                newNode->depth=n->depth+1;
                 newNode->operation = new Move(mContainer, finalLoc,cost);
 
                 newNode->shipState[openSpot].description=n->containerToDrop.description;
@@ -355,6 +360,7 @@ bool Search::isGoalState(Node* n, string type, int orderedWeights[]){
                         weightPos++;
                     }
                 }
+                cout<<"sift goal";
                 return true;
             }
         //}
@@ -362,6 +368,15 @@ bool Search::isGoalState(Node* n, string type, int orderedWeights[]){
     return false;
 }
 
+int Search::traceCost(Node* n){
+    Node* currNode = n;
+    int totalCost=0;
+    while(currNode->parent!=NULL){
+        totalCost+=currNode->cost_g;
+        currNode=currNode->parent;
+    }
+    return totalCost;
+}
 vector<Move*> Search::trace(Node* n){
     //trace and convert to move objects
     vector<Move*> moves;
@@ -396,13 +411,27 @@ int Search::getHeuristic(Node* n, int slotsNum){
     //get count of how many containers had to be moved to get that value
     //get closet available col for each container
     //add everything together
-    int rightSideSum=0;
-    for(int i=0;i<8;i++){ //sum of "correctly placed" right side
-        rightSideSum+=stoi(n->shipState[0].weight);
-
+    int h=0;
+    for(int i=96;i<108;i++){
+        if(n->shipState[i].description!="UNUSED"){
+            //h+=2;
+            for(int i=0; i<12; i++){
+                if(getEmptyLoc(i,n)!=-1){
+                    h+=2+i;
+                    break;
+                }
+            }
+        }
+    }
+    string loc;
+    for(int i=108;i<204;i++){
+        if(n->shipState[i].description!="UNUSED"){
+            loc = n->shipState[i].location;
+            h+=(24-stoi(loc.substr(3,2)))+4+1;
+        }
     }
 
-    return 0;
+    return h;
 }
 
 Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, int orderedWeights[]){
@@ -412,12 +441,17 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
     int minPos;
     Node* currNode;
     vector<Node*> expandedNodeOptions;
+    vector<Node*> goals;
     while(!queue.empty()){
         minPos = 0;
         for(int k=0;k<queue.size();k++){
-            //queue[k].heuristic_h = getHeuristic(queue[k]);
+            //queue[k]->heuristic_h = getHeuristic(queue[k],slotsNum);
             queue[k]->heuristic_h = 0;
-            queue[k]->totalCost_f = queue[k]->heuristic_h+ queue[k]->cost_g;
+            queue[k]->totalCost_f = queue[k]->depth;
+            queue[k]->totalCost_f += queue[k]->heuristic_h+queue[k]->cost_g;
+            //queue[k]->totalCost_f = queue[k]->heuristic_h+queue[k]->costNoH;
+            //queue[k]->totalCost_f=queue[k]->heuristic_h+traceCost(queue[k]);
+
             if(queue[k]->totalCost_f < queue[minPos]->totalCost_f){
                 minPos=k;
             }
@@ -431,13 +465,13 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
         if(isGoalState(currNode,type,orderedWeights)){
             cout<<"\ngoal node found!\n";
             return currNode;
+            //goals.push_back(currNode);
         }else{
             expandedNodeOptions=expand(currNode, totalCols, slotsNum, alreadyExpanded);
-            cout<<"\nexapnded nodes:\n";
+            //cout<<"\nexapnded nodes:\n";
             for(int i=0; i<expandedNodeOptions.size();i++){
                 //printState(expandedNodeOptions[i],slotsNum);
-                cout<<"\n";
-
+                //cout<<"\n";
                 //queue.push_back(expandedNodeOptions[i]);
 
 
@@ -451,6 +485,8 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
                     }
                 }
                 if(!alreadyExists){
+                    //expandedNodeOptions[i]->depth=expandedNodeOptions[i]->depth+1;
+                    cout<<"\nadded new node to queue";
                     queue.push_back(expandedNodeOptions[i]);
                 }
 
@@ -460,13 +496,25 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
          }
     }
 
-    currNode->notValid=true; //no goal state found
-    cout<<"\nno goal state found\n";
-    return currNode;
+    if(goals.empty()){
+        currNode->notValid=true; //no goal state found
+        currNode->alreadyExpanded=alreadyExpanded;
+        cout<<"\nno goal state found\n";
+        return currNode;
+    }else{
+        int lowestCost=INT_MAX;
+        int lowestCostPos=-1;
+        for(int i=0;i<goals.size();i++){
+            if(goals[i]->totalCost_f<lowestCost){
+                lowestCostPos=i;
+            }
+        }
+        return goals[lowestCostPos];
+    }
 }
 
 vector<Move*> Search::getMovesList(){
-    cout<<"in get moves func\n";
+    //cout<<"in get moves func\n";
     vector<Move*> moves;
     //int totalCols = 13;
     int totalCols = 36;
@@ -598,7 +646,7 @@ vector<Move*> Search::getMovesList(){
     slotsArray[203].location="04,24";
 
 
-    cout<<"slots all initialized\n";
+    //cout<<"slots all initialized\n";
     Node* root=new Node();
     for(int j=0; j<slotsNum;j++){
         root->shipState[j]=slotsArray[j];
@@ -608,15 +656,13 @@ vector<Move*> Search::getMovesList(){
     root->containerToDrop.location="nothing picked up";
     root->containerToDrop.weight="nothing picked up";
     root->parent=NULL;
+    root->cost_g=0;
+    root->totalCost_f=0;
+    root->costNoH=0;
 
-    if(root->parent!=NULL){
-        cout<<"root parent != null";
-    }
 
 
-    cout<<"root created\n";
     int temp[0];
-    cout<<"test";
     Node* goal = getGoalNode(root, totalCols, slotsNum, "normal balance", temp);
     cout<<"got goal\n";
     if(goal->notValid){
@@ -631,7 +677,26 @@ vector<Move*> Search::getMovesList(){
                 if (orderedWeights[j] > orderedWeights[j + 1])
                     swap(orderedWeights[j], orderedWeights[j + 1]);
 
-        goal = getGoalNode(root, totalCols, slotsNum, "sift",orderedWeights);
+        int lowestCost=INT_MAX;
+        int lowestCostPos=-1;
+        for(int k=0;k<goal->alreadyExpanded.size();k++){
+            if(isGoalState(goal->alreadyExpanded[k],"sift",orderedWeights)){
+                //if(goal->alreadyExpanded[k]->totalCost_f<lowestCost){
+                    //lowestCost=goal->alreadyExpanded[k]->totalCost_f;
+                    //lowestCostPos=k;
+                //}
+                Node* t;
+                t=goal->alreadyExpanded[k];
+                goal=t;
+            }
+        }
+        //Node* t;
+        //if(lowestCostPos!=-1){
+            //t=goal->alreadyExpanded[lowestCostPos];
+            //goal=t;
+        //}
+
+        //goal = getGoalNode(root, totalCols, slotsNum, "sift",orderedWeights);
     }
     //call trace function
     //return trace(goal);

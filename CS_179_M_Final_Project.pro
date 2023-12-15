@@ -16,6 +16,7 @@ SOURCES += \
     Operation.cpp \
     Search.cpp \
     Search2.cpp \
+    Search2_copy.cpp \
     Slot.cpp \
     main.cpp \
     mainwindow.cpp
