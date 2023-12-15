@@ -72,7 +72,7 @@ public:
     void set_up_animation();
     void initial_container_setup();
     void set_container_style(const QString, string);
-    QString get_border_type(int, int, string);
+    QString get_style(int, int, string, string);
     void update_container_styles();
     int to_line_index(string);
     string to_coordinates(int);

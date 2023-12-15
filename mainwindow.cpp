@@ -240,7 +240,7 @@ void MainWindow::display_move(unsigned long long i)
     //format log message for move update
     moveLogMessage = "Container " + currentContainer->get_description() + ", weighing " + userInputWeight.toStdString() + " kilos has been moved from ";
     if(location.substr(0,4) == "Ship"){ //container moved from location on ship
-        update_manifest(manifest_line_chosen, "UNUSED", 0);
+        // update_manifest(manifest_line_chosen, "UNUSED", 0);
         moveLogMessage += "[" + chosen_coord + "] on Ship to ";
     } else if (location == "Truck") { //moved from truck
         moveLogMessage += "truck to ";
@@ -249,7 +249,7 @@ void MainWindow::display_move(unsigned long long i)
     }
 
     if(finalLocation.substr(0,4) == "Ship"){ //container moved to location on ship
-        update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
+        // update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
         moveLogMessage += "[" + goal_coord + "] on Ship";
     } else if (finalLocation == "Truck"){ //moved to truck
         moveLogMessage += "truck";
@@ -715,42 +715,42 @@ void MainWindow::set_up_animation(){
 void MainWindow::set_container_style(const QString containerName, string type){
     cout << "set container style " << containerName.toStdString() << " " << type << endl;
     QLabel *label = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(containerName));
-    QString border = "";
+    QString style = "";
     if(containerName[0] != 't'){
-        border = get_border_type(containerName.mid(1,2).toInt(), containerName.mid(3,2).toInt(), containerName.mid(0,1).toStdString());
+        style = get_style(containerName.mid(1,2).toInt(), containerName.mid(3,2).toInt(), containerName.mid(0,1).toStdString(), type);
     }
     if(type == "chosen"){ //container to be moved
         cout << "setting chosen" << endl;
         if(containerName[0] == 't'){
             label->setStyleSheet("border:3px solid #51E260;");
         } else {
-            label->setStyleSheet("background-color: #51E260;" + border);
+            label->setStyleSheet(style);
         }
     } else if (type == "goal"){ //location for container to be moved to
         cout << "setting goal" << endl;
         if(containerName[0] == 't'){
             label->setStyleSheet("border:3px solid #F7F02B;");
         } else {
-            label->setStyleSheet("background-color: #F7F02B;");
+            label->setStyleSheet(style);
         }
         connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
         flashTimer->start(750);
     } else if (type == "NAN"){
         cout << "setting NAN" << endl;
-        label->setStyleSheet("background-color: #C9C9C9;" + border);
+        label->setStyleSheet(style);
     } else if (type == "set"){ //set location as container
         cout << "setting container" << endl;
         if(containerName[0] == 't'){
             label->setVisible(false);
         } else {
-            label->setStyleSheet("background-color: #498E93;" + border);
+            label->setStyleSheet(style);
         }
     } else { //location now empty
         cout << "setting to empty" << endl;
         if(containerName[0] == 't'){
             label->setVisible(false);
         } else {
-            label->setStyleSheet("background-color: white;" + border);
+            label->setStyleSheet(style);
         }
     }
 }
@@ -773,36 +773,51 @@ void MainWindow::initial_container_setup(){
     }
 }
 
-QString MainWindow::get_border_type(int row, int col, string loc){\
+QString MainWindow::get_style(int row, int col, string loc, string type){
+    QString style;
+    if(type == "chosen"){ //container to be moved
+        style = "background-color: #51E260;";
+    } else if (type == "goal"){ //location for container to be moved to
+        style ="background-color: #F7F02B;";
+    } else if (type == "NAN"){
+        style = "background-color: #C9C9C9;";
+    } else if (type == "set"){ //set location as container
+        style = "background-color: #498E93;";
+    } else { //location now empty
+        style = "background-color: white;";
+    }
+
     if(loc == "s"){
         if (row == 8 && col == 12){
             cout << "ship border top right" << endl;
-            return "border: 0.5px solid black;";
+            style += "border: 0.5px solid black;";
         } else if (col == 12) {
             cout << "ship right border" << endl;
-            return "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
         } else  if (row == 8){
             cout << "ship top row border" << endl;
-            return "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
+            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
         } else {
             cout << "ship any other" << endl;
-            return "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
         }
     } else if (loc == "b"){
         if( row == 4 && col == 24){
             cout << "buffer border top right" << endl;
-            return "border: 0.5px solid black;";
+            style += "border: 0.5px solid black;";
         }else if (col == 24) {
             cout << "buffer right border" << endl;
-            return "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
         } else  if (row == 4){
             cout << "buffer top row border" << endl;
-            return "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
+            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
         } else {
             cout << "buffer any other" << endl;
-            return "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
         }
     }
+
+    return style;
 
 }
 
