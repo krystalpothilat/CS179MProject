@@ -448,6 +448,7 @@ void MainWindow::on_weightinput_returnPressed()
 
         // Set the weight for the current container
         currentContainer->set_weight(weight);
+        cout << currentContainer->get_weight() << " test " << endl;
 
         // Update UI and display information
         moveoutput += "Weight: " + to_string(currentContainer->get_weight()) + " Kilograms";
