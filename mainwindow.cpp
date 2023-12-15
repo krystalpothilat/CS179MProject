@@ -386,10 +386,15 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
         get_unload_options();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
+        set_up_animation();
         initial_container_setup();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
         QCoreApplication::processEvents();
+        string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
+        updatelog(description);
+        set_up_animation();
+        initial_container_setup();
         calculate();
     }
 }
