@@ -550,6 +550,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 {
     time -= to_be_completed_moves.at(index)->get_time();
     CurrentOperation->move_complete(index);
+    QCoreApplication::processEvents();
     update_container_styles();
     updatelog(moveLogMessage);
     index++;
@@ -767,6 +768,7 @@ void MainWindow::set_container_style(const QString containerName, string type){
 }
 
 void MainWindow::initial_container_setup(){
+    QCoreApplication::processEvents();
     cout << "initial container setup" << endl;
     vector<Container*> containers = CurrentOperation->get_NAN_containers();
     for(size_t i =0; i < containers.size(); i++){
@@ -833,6 +835,7 @@ QString MainWindow::get_style(int row, int col, string loc, string type){
 }
 
 void MainWindow::update_container_styles(){
+    QCoreApplication::processEvents();
     cout << "update container styles after move" << endl;
     QString chosen = CurrentOperation->get_current_container();
     set_container_style(chosen, "");

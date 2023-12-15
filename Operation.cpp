@@ -173,7 +173,12 @@ void Operation::reset()
     note = "";
     load_or_balance = ' ';
     manifest_path = "";
+    current_container_loc = "";
+    current_goal_loc = "";
     for (Container *ptr : containers) {
+        delete ptr;
+    }
+    for (Container *ptr : NAN_containers) {
         delete ptr;
     }
     containers.clear();
