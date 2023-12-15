@@ -10,20 +10,24 @@ CONFIG += c++17
 
 SOURCES += \
     Container.cpp \
+    LoadUnload.cpp \
     Move.cpp \
     Node.cpp \
     Operation.cpp \
     Search.cpp \
+    Search2.cpp \
     Slot.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Container.h \
+    LoadUnload.h \
     Move.h \
     Node.h \
     Operation.h \
     Search.h \
+    Search2.h \
     Slot.h \
     mainwindow.h
 
