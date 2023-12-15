@@ -240,7 +240,7 @@ void MainWindow::display_move(unsigned long long i)
     //format log message for move update
     moveLogMessage = "Container " + currentContainer->get_description() + ", weighing " + userInputWeight.toStdString() + " kilos has been moved from ";
     if(location.substr(0,4) == "Ship"){ //container moved from location on ship
-        // update_manifest(manifest_line_chosen, "UNUSED", 0);
+        //update_manifest(manifest_line_chosen, "UNUSED", 0);
         moveLogMessage += "[" + chosen_coord + "] on Ship to ";
     } else if (location == "Truck") { //moved from truck
         moveLogMessage += "truck to ";
@@ -249,7 +249,7 @@ void MainWindow::display_move(unsigned long long i)
     }
 
     if(finalLocation.substr(0,4) == "Ship"){ //container moved to location on ship
-        // update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
+        //update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
         moveLogMessage += "[" + goal_coord + "] on Ship";
     } else if (finalLocation == "Truck"){ //moved to truck
         moveLogMessage += "truck";
