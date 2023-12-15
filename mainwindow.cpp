@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -104,6 +103,13 @@ void MainWindow::clear_vectors()
 void MainWindow::calculate()
 {
     to_be_completed_moves = CurrentOperation->get_moves();
+    if(to_be_completed_moves.empty()){
+        ui->stackedWidget->setCurrentIndex(5);
+        QCoreApplication::processEvents();
+        save();
+        showDialog("No moves need to be made.");
+        return;
+    }
     time = 0;
     for (unsigned long long i = 0; i < to_be_completed_moves.size(); i++) {
         time += to_be_completed_moves.at(i)->get_time();
@@ -260,12 +266,14 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
     CurrentOperation->set_manifest_path(filepath); //sends file path to backend now that user has confirmed their choice
     if (load_or_balance == 'l') {
         ui->stackedWidget->setCurrentIndex(2);
+        QCoreApplication::processEvents();
         get_unload_options();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
         // set_NAN_containers();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
+        QCoreApplication::processEvents();
         calculate();
     }
 }
@@ -359,6 +367,7 @@ void MainWindow::on_Select_Load_Confirm_clicked()
 {
     CurrentOperation->set_load(to_be_loaded);
     ui->stackedWidget->setCurrentIndex(3);
+    QCoreApplication::processEvents();
     calculate();
 }
 
@@ -417,6 +426,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
     index++;
     if (index == to_be_completed_moves.size()) {
         ui->stackedWidget->setCurrentIndex(5);
+        QCoreApplication::processEvents();
         save();
     } else {
         display_move(index);
