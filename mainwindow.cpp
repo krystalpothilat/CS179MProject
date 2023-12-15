@@ -401,6 +401,7 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
         set_up_animation();
         QCoreApplication::processEvents();
         initial_container_setup();
+        QCoreApplication::processEvents();
         calculate();
     }
 }
