@@ -15,8 +15,33 @@ MainWindow::MainWindow(QWidget *parent)
     set_up_animation();
     currentUTCtime = QDateTime::currentDateTimeUtc();
     pacificTimeZone = QTimeZone("America/Los_Angeles");
-    qlogpath = QString::fromStdString(logpath);
     flashTimer = new QTimer(this);
+
+    //get/set log path
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    cout << "appDataPath: " << appDataPath.toStdString() << endl;
+    //check directory exists
+    QDir dir(appDataPath);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    QString fileName = "Log2024.txt";
+    QString filePath = appDataPath + QDir::separator() + fileName;
+    cout << "logpath = " << filePath.toStdString() << endl;
+    if (QFile::exists(filePath)) {
+        qlogpath = filePath;
+    } else {
+        // create new log with fileName
+        QFile file(filePath);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            file.close();
+            qDebug() << "Empty file created.";
+        } else {
+            qDebug() << "Error creating a new file.";
+        }
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -448,7 +473,6 @@ void MainWindow::on_weightinput_returnPressed()
 
         // Set the weight for the current container
         currentContainer->set_weight(weight);
-        cout << currentContainer->get_weight() << " test " << endl;
 
         // Update UI and display information
         moveoutput += "Weight: " + to_string(currentContainer->get_weight()) + " Kilograms";

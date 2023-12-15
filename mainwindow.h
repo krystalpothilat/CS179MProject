@@ -45,7 +45,6 @@ public:
     char load_or_balance = ' ';
     string filepath = " ";
     string filename = " ";
-    string logpath = "/Users/krystalpothilat/Documents/Log2024.txt";
     QString qlogpath;
     QDateTime currentUTCtime;
     QTimeZone pacificTimeZone;

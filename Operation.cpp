@@ -31,7 +31,7 @@ void Operation::set_load_or_balance(char a)
 void Operation::set_manifest_path(string path)
 {
     manifest_path = path;
-    cout << "Path set: " << path << endl;
+    cout << "Manifest Path set: " << path << endl;
 }
 
 string Operation::get_manifest_path()
@@ -64,7 +64,6 @@ vector<Container*> Operation::get_containers()
     QRegularExpressionMatch match;
     while (!(in.atEnd())){
         QString line = in.readLine();
-        cout << line.toStdString() << endl;
         manifestlines.append(line);
         match = regex.match(line);
         string location = "s " + match.captured(1).toStdString() + ","
