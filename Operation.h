@@ -13,12 +13,13 @@ private:
     string username;
     string note;
     char load_or_balance; // set to l means load operation, set to b means balance
-    string manifest_path; //file location of the manifest
+    string manifest_path; //file location of the given/new manifest
     vector<Container*> containers; //vector of container pointers
     vector<Container*> NAN_containers;
     vector<Move*> moves; //vector of move pointers to be completed in order index 0 = first move
     QString current_container_loc;
     QString current_goal_loc;
+    QStringList manifestlines;
     vector<Container *> containersToLoad;
     vector<Container *> containersToUnload;
 public:
@@ -33,6 +34,10 @@ public:
     void set_manifest_path(string);
 
     string get_manifest_path();
+
+    QStringList get_manifestlines();
+
+    void set_manifest_line(int, QString);
 
     vector<Container*> get_NAN_containers();
 

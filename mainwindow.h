@@ -20,6 +20,9 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QTimer>
+#include <QObject>
+#include <QStandardPaths>
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,9 +43,8 @@ public:
     vector<int> indexVector;
     string moveoutput = "";
     char load_or_balance = ' ';
-    string filepath = "";
-    string filename = "";
-    string logpath = ":/files/Log2024.txt";
+    string filepath = " ";
+    string filename = " ";
     QString qlogpath;
     QDateTime currentUTCtime;
     QTimeZone pacificTimeZone;
@@ -50,6 +52,7 @@ public:
     int time = 0;
     const int MAXCHARLIMIT = 256;
     unsigned long long index = 0;
+    string moveLogMessage;
     QListWidgetItem *UserName;
     QListWidgetItem *Manifest;
     MainWindow(QWidget *parent = nullptr);
@@ -67,9 +70,14 @@ public:
     void updatelog(string);
     QTimer* flashTimer;
     void set_up_animation();
-    void set_NAN_containers();
+    void initial_container_setup();
     void set_container_style(const QString, string);
+    QString get_style(int, int, string, string);
     void update_container_styles();
+    int to_line_index(string);
+    string to_coordinates(int);
+    void update_manifest(int, string, int);
+    string appendLeadingZeros(string, int);
 
 private slots:
     void on_Main_Menu_Load_Unload_clicked();
@@ -110,5 +118,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+// signals:
+//     void weightUpdated(int updatedWeight);
 };
+
 #endif // MAINWINDOW_H

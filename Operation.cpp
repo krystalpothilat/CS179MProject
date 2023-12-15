@@ -21,7 +21,6 @@ void Operation::set_note(string n)
 {
     note = n;
     cout << "Note Set: " << note << endl;
-    //update log
 }
 
 void Operation::set_load_or_balance(char a)
@@ -33,17 +32,26 @@ void Operation::set_load_or_balance(char a)
 void Operation::set_manifest_path(string path)
 {
     manifest_path = path;
-    cout << "Path set: " << path << endl;
-    //update log stating manifest was opened
+    cout << "Manifest Path set: " << path << endl;
 }
 
 string Operation::get_manifest_path()
 {
-    //make sure new manifest has been saved to new location before returning the path
-    //DEMO PURPOSES ONLY: MANIFEST SAVED TO SAME LOCATION
     return manifest_path;
 }
 
+QStringList Operation::get_manifestlines(){
+    return manifestlines;
+}
+
+void Operation::set_manifest_line(int i, QString line){
+    if (i >= 0 && i < manifestlines.size()) {
+        manifestlines[i] = line;
+        cout << "done setting manifest line" << endl;
+    } else {
+        cout << "Invalid index: " << i << endl;
+    }
+}
 
 vector<Container*> Operation::get_NAN_containers(){
     return NAN_containers;
@@ -60,8 +68,9 @@ vector<Container*> Operation::get_containers()
 
     QRegularExpression regex("\\[([^,]+),([^\\]]+)\\], \\{([^\\}]+)\\}, (.+)");
     QRegularExpressionMatch match;
-    while (!in.atEnd()) {
+    while (!(in.atEnd())){
         QString line = in.readLine();
+        manifestlines.append(line);
         match = regex.match(line);
         string location = "s " + match.captured(1).toStdString() + ","
                           + match.captured(2).toStdString();
@@ -72,6 +81,7 @@ vector<Container*> Operation::get_containers()
         } else if (desc != "UNUSED"){ //non NAN or UNUSED
             containers.push_back(new Container(location, desc, weight));
         }
+
     }
     file.close();
     return containers;
@@ -98,7 +108,6 @@ vector<Move *> Operation::get_moves()
 {
     //Calculate moves given all the data before returning moves
 
-    //Malina testing
     if(load_or_balance=='b'){ //balance
         Search balanceOp;
         balanceOp.manifestPath=get_manifest_path();
@@ -108,7 +117,6 @@ vector<Move *> Operation::get_moves()
         load.manifestPath=get_manifest_path();
         moves= load.getMovesList(containersToLoad,containersToUnload);
     }
-
 
 
 
@@ -158,13 +166,19 @@ void Operation::move_complete(unsigned long long a)
     //update log and manfiest that move at index a of the vector moves is complete
 }
 
+
 void Operation::reset()
 {
     username = "";
     note = "";
     load_or_balance = ' ';
     manifest_path = "";
+    current_container_loc = "";
+    current_goal_loc = "";
     for (Container *ptr : containers) {
+        delete ptr;
+    }
+    for (Container *ptr : NAN_containers) {
         delete ptr;
     }
     containers.clear();
