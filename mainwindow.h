@@ -115,5 +115,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+signals:
+    void weightUpdated(int updatedWeight);
 };
+
 #endif // MAINWINDOW_H
