@@ -827,5 +827,4 @@ void MainWindow::update_container_styles(){
     set_container_style(chosen, "");
     QString goal = CurrentOperation->get_goal_loc();
     set_container_style(goal, "set");
-
 }
