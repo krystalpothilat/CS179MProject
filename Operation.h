@@ -20,6 +20,8 @@ private:
     QString current_container_loc;
     QString current_goal_loc;
     QStringList manifestlines;
+    vector<Container *> containersToLoad;
+    vector<Container *> containersToUnload;
 public:
     Operation();
 

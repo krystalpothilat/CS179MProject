@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -10,8 +9,15 @@ MainWindow::MainWindow(QWidget *parent)
     hide_elements();
     //note and user name hide
     ui->NoteInput->setVisible(false);
+    ui->NoteInput->setPlaceholderText("Enter Note Here");
     ui->UserNameInput->setVisible(false);
+    ui->UserNameInput->setPlaceholderText("Enter Name Here");
+
     ui->stackedWidget->setCurrentIndex(0);
+    QListWidgetItem *item1 = new QListWidgetItem();
+    QListWidgetItem *item2 = new QListWidgetItem();
+    Manifest = item1;
+    UserName = item2;
     set_up_animation();
     currentUTCtime = QDateTime::currentDateTimeUtc();
     pacificTimeZone = QTimeZone("America/Los_Angeles");
@@ -48,10 +54,13 @@ MainWindow::~MainWindow()
 {
     ui->LoadContainerDisplay->clear();
     ui->unLoadContainerDisplay->clear();
+    ui->UserNameDisplay->clear();
+    ui->ManifestDisplay->clear();
     delete ui;
     CurrentOperation->reset();
     delete CurrentOperation;
     clear_vectors();
+
 }
 
 // Helper Functions
@@ -117,6 +126,13 @@ void MainWindow::clear_vectors()
 void MainWindow::calculate()
 {
     to_be_completed_moves = CurrentOperation->get_moves();
+    if(to_be_completed_moves.empty()){
+        ui->stackedWidget->setCurrentIndex(5);
+        QCoreApplication::processEvents();
+        save();
+        showDialog("No moves need to be made.");
+        return;
+    }
     time = 0;
     for (unsigned long long i = 0; i < to_be_completed_moves.size(); i++) {
         time += to_be_completed_moves.at(i)->get_time();
@@ -129,6 +145,10 @@ void MainWindow::calculate()
 void MainWindow::get_unload_options()
 {
     to_be_unloaded_options = CurrentOperation->get_containers();
+    sort(to_be_unloaded_options.begin(), to_be_unloaded_options.end(),
+         [](Container* a, Container* b) {
+             return a->get_description() < b->get_description();
+         });
     for (unsigned long long i = 0; i < to_be_unloaded_options.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem();
         item->setText(QString::fromStdString(to_string(i + 1) + " " + to_be_unloaded_options.at(i)->get_description() + ". " + to_string(to_be_unloaded_options.at(i)->get_weight()) + " Kilos."));
@@ -360,12 +380,14 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
     CurrentOperation->set_manifest_path(filepath); //sends file path to backend now that user has confirmed their choice
     if (load_or_balance == 'l') {
         ui->stackedWidget->setCurrentIndex(2);
+        QCoreApplication::processEvents();
         get_unload_options();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
         initial_container_setup();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
+        QCoreApplication::processEvents();
         calculate();
     }
 }
@@ -373,16 +395,25 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
 void MainWindow::on_UploadManifestSelectFile_clicked()
 {
     QString qfilepath = QFileDialog::getOpenFileName(this, "Open Manifest",QDir::homePath(),"Text Files (*.txt)");
-    filepath = qfilepath.toStdString();
-    if (filepath != "") {
+    string tempfilepath = qfilepath.toStdString();
+    ui->Upload_Manifest_Confirm->setVisible(false);
+    if (tempfilepath!= "") {
+        filepath = qfilepath.toStdString();
         QFileInfo fileInfo(qfilepath);
         QString qfilename = fileInfo.fileName();
         cout << qfilename.toStdString() << endl;
         QString qfilenameWithoutTxt = removeTxtExtension(qfilename);
         filename = qfilenameWithoutTxt.toStdString();
-        cout << filename << endl;
-        ui->ManifestDisplay->setText(qfilenameWithoutTxt);
+        Manifest->setText(qfilenameWithoutTxt);
+        if(ui->ManifestDisplay->count()==0){
+            ui->ManifestDisplay->addItem(Manifest);
+        }
         ui->Upload_Manifest_Confirm->setVisible(true);
+    }
+    else{
+        if(ui->ManifestDisplay->count()!=0){
+            Manifest->setText("");
+        }
     }
 }
 
@@ -421,7 +452,15 @@ void MainWindow::on_LoadContainerInput_returnPressed()
         ui->LoadContainerInput->setText("");
         return;
     }
-
+    string container = qcontainer.toStdString();
+    if(container.length()>MAXCHARLIMIT){
+        ui->UserNameInput->setText("");
+        string charactersOverLimit = to_string(container.length()-MAXCHARLIMIT);
+        string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        ui->LoadContainerInput->setText("");
+        showDialog(QString::fromStdString(output));
+        return;
+    }
     QStringList invalidStrings = {"nan", "unused", "empty"};
     for (const QString &forbidden : invalidStrings) {
         if (qcontainer.toLower() == forbidden) {
@@ -435,7 +474,6 @@ void MainWindow::on_LoadContainerInput_returnPressed()
     // Valid input, add to the list and clear the input
     QListWidgetItem *item = new QListWidgetItem(qcontainer, ui->LoadContainerDisplay);
     ui->LoadContainerDisplay->addItem(item);
-    string container = qcontainer.toStdString();
     to_be_loaded.push_back(new Container("t", container, -1));
     ui->LoadContainerInput->setText("");
 }
@@ -444,6 +482,7 @@ void MainWindow::on_Select_Load_Confirm_clicked()
 {
     CurrentOperation->set_load(to_be_loaded);
     ui->stackedWidget->setCurrentIndex(3);
+    QCoreApplication::processEvents();
     calculate();
 }
 
@@ -504,6 +543,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
     index++;
     if (index == to_be_completed_moves.size()) {
         ui->stackedWidget->setCurrentIndex(5);
+        QCoreApplication::processEvents();
         save();
     } else {
         display_move(index);
@@ -514,7 +554,7 @@ void MainWindow::on_Step_X_of_X_Confirm_clicked()
 void MainWindow::on_Download_Manifest_Confirm_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-    ui->ManifestDisplay->setText("");
+    Manifest->setText("");
     time = 0;
     index = 0;
     filepath = "";
@@ -538,7 +578,17 @@ void MainWindow::on_UserNameInput_returnPressed()
         return;
     }
     string name = qname.toStdString();
-    ui->UserNameDisplay->setText(qname);
+    if(name.length()>MAXCHARLIMIT){
+        ui->UserNameInput->setText("");
+        string charactersOverLimit = to_string(name.length()-MAXCHARLIMIT);
+        string output = "Name cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        showDialog(QString::fromStdString(output));
+        return;
+    }
+    UserName->setText(qname);
+    if(ui->UserNameDisplay->count()==0){
+        ui->UserNameDisplay->addItem(UserName);
+    }
     CurrentOperation->set_username(name);
     ui->UserNameInput->setText("");
     ui->UserNameInput->setVisible(false);
@@ -547,7 +597,30 @@ void MainWindow::on_UserNameInput_returnPressed()
 
 void MainWindow::on_NoteInput_returnPressed()
 {
-    string note = ui->NoteInput->text().toStdString();
+    QString qnote = ui->NoteInput->text().trimmed();
+    string note = qnote.toStdString();
+    if (containsNonPrintableCharacters(qnote)||qnote.isEmpty()) {
+        ui->NoteInput->setText("");
+        showDialog("Please enter at least one printable character.");
+        return;
+    }
+    if(note.length()>MAXCHARLIMIT){
+        int numChunks = (note.length() + MAXCHARLIMIT - 1) / MAXCHARLIMIT;
+
+        for (int i = 0; i < numChunks; ++i) {
+            int startIdx = i * MAXCHARLIMIT;
+            int endIdx = startIdx + MAXCHARLIMIT;
+            if (endIdx > note.length()) {
+                endIdx = note.length();
+            }
+
+            string chunk = note.substr(startIdx, endIdx - startIdx);
+            CurrentOperation->set_note(chunk);
+        }
+        ui->NoteInput->setText("");
+        ui->NoteInput->setVisible(false);
+        return;
+    }
     CurrentOperation->set_note(note);
     ui->NoteInput->setText("");
     ui->NoteInput->setVisible(false);

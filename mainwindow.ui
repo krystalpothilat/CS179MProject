@@ -22,6 +22,52 @@
     <height>16777215</height>
    </size>
   </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>75</red>
+        <green>141</green>
+        <blue>151</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>75</red>
+        <green>141</green>
+        <blue>151</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>75</red>
+        <green>141</green>
+        <blue>151</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>75</red>
+        <green>141</green>
+        <blue>151</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
+  </property>
   <property name="windowTitle">
    <string>CS 179 Project</string>
   </property>
@@ -44,8 +90,54 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>212</red>
+          <green>220</green>
+          <blue>222</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>212</red>
+          <green>220</green>
+          <blue>222</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>212</red>
+          <green>220</green>
+          <blue>222</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>212</red>
+          <green>220</green>
+          <blue>222</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
     <property name="autoFillBackground">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="currentIndex">
      <number>4</number>
@@ -157,6 +249,9 @@
         <pointsize>18</pointsize>
        </font>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="C_Select_Unload">
@@ -212,6 +307,9 @@
        <font>
         <pointsize>18</pointsize>
        </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
      </widget>
      <widget class="QLabel" name="waitlabel">
@@ -290,24 +388,6 @@
        <string>Confirm</string>
       </property>
      </widget>
-     <widget class="QLabel" name="stepxofxdisplay">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>1231</width>
-        <height>271</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>24</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Step X of X:</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="weightinput">
       <property name="geometry">
        <rect>
@@ -323,7 +403,7 @@
        </font>
       </property>
       <property name="placeholderText">
-       <string>Enter Weight In Killograms Here</string>
+       <string>Enter Weight in Kilograms Here</string>
       </property>
      </widget>
      <widget class="QLabel" name="weightprompt">
@@ -3714,6 +3794,27 @@
      <zorder>b0410</zorder>
      <zorder>b0417</zorder>
      <zorder>b0420</zorder>
+     <widget class="QTextEdit" name="stepxofxdisplay">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>621</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::NoTextInteraction</set>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="G_Download_Manifest">
      <widget class="QPushButton" name="Download_Manifest_Confirm">
@@ -3734,13 +3835,13 @@
        <string>Confirm</string>
       </property>
      </widget>
-     <widget class="QLabel" name="downloadmanifestdisplay">
+     <widget class="QTextEdit" name="downloadmanifestdisplay">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>30</y>
-        <width>1231</width>
-        <height>311</height>
+        <x>50</x>
+        <y>50</y>
+        <width>1191</width>
+        <height>291</height>
        </rect>
       </property>
       <property name="font">
@@ -3748,8 +3849,11 @@
         <pointsize>24</pointsize>
        </font>
       </property>
-      <property name="text">
-       <string>Please wait while manifest file is being saved . . .</string>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextSelectableByMouse</set>
       </property>
      </widget>
     </widget>
@@ -3810,26 +3914,13 @@
      </widget>
     </widget>
    </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>160</y>
-      <width>1261</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>60</y>
       <width>1251</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -3848,13 +3939,6 @@
        </property>
        <property name="text">
         <string>Note</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_3">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -3896,14 +3980,7 @@
         </font>
        </property>
        <property name="placeholderText">
-        <string>Enter Note Here</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_4">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <string/>
        </property>
       </widget>
      </item>
@@ -3915,7 +3992,7 @@
         </font>
        </property>
        <property name="placeholderText">
-        <string>Enter Name Here</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -3925,43 +4002,45 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>1251</width>
       <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
-      <widget class="QLabel" name="ManifestDisplay">
+      <widget class="QListWidget" name="ManifestDisplay">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="font">
         <font>
          <pointsize>18</pointsize>
         </font>
        </property>
-       <property name="text">
-        <string/>
-       </property>
       </widget>
      </item>
      <item>
-      <widget class="Line" name="line_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+      <widget class="QListWidget" name="UserNameDisplay">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="UserNameDisplay">
        <property name="font">
         <font>
          <pointsize>18</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string/>
+        <enum>Qt::RightToLeft</enum>
        </property>
       </widget>
      </item>

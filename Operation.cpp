@@ -1,7 +1,7 @@
 #include "Operation.h"
 #include "QtCore/qdebug.h"
 #include "Search.h"
-#include "mainwindow.h"
+#include "Search2.h"
 
 Operation::Operation()
 {
@@ -103,26 +103,28 @@ vector<Move *> Operation::get_moves()
 {
     //Calculate moves given all the data before returning moves
 
-    //Malina testing
-    Search t;
-    t.manifestPath=get_manifest_path();
-    //cout<<"\nSeach path: "<< t.manifestPath;
-    //t.getMovesList();
-    string test="00900";
-    int w=stoi(test);
-    cout<<"converted: "<< w << endl;
+    if(load_or_balance=='b'){ //balance
+        Search balanceOp;
+        balanceOp.manifestPath=get_manifest_path();
+        moves= balanceOp.getMovesList();
+    }else{ // load/unload
+        Search2 load;
+        load.manifestPath=get_manifest_path();
+        moves= load.getMovesList(containersToLoad,containersToUnload);
+    }
+
 
 
     //DEMO PURPOSES ONLY!!! BEGIN
-    Container* container1 = new Container("s 01,02","Cat",99);
-    Container* container2 = new Container("s 01,03","Dog",100);
-    Container* container3 = new Container("s 01,07","Rats",-1);
-    Move *move1 = new Move(container1, "b 01,01", 7);
-    moves.push_back(move1);
-    Move *move2 = new Move(container2, "t", 8);
-    moves.push_back(move2);
-    Move *move3 = new Move(container3, "s 01,05", 5);
-    moves.push_back(move3);
+    //Container* container1 = new Container("s 01,02","Cat",99);
+    //Container* container2 = new Container("s 01,03","Dog",100);
+    //Container* container3 = new Container("s 01,07","Rats",-1);
+    //Move *move1 = new Move(container1, "b 01,01", 7);
+    //moves.push_back(move1);
+    //Move *move2 = new Move(container2, "t", 8);
+    //moves.push_back(move2);
+    //Move *move3 = new Move(container3, "s 01,05", 5);
+    //moves.push_back(move3);
     //DEMO PURPOSES ONLY!!! END
 
     return moves;
@@ -131,19 +133,25 @@ vector<Move *> Operation::get_moves()
 void Operation::set_unload(vector<Container *> u)
 {
     //do something with containers to be unloaded
-    for (unsigned long long i = 0; i < u.size(); i++) {
-        cout << "Container containing: " << u.at(i)->get_description() << " weighing "
-             << u.at(i)->get_weight() << " kilos located at: " << u.at(i)->get_location()
-             << " is to be unloaded." << endl;
+    if(!u.empty()){
+        for (unsigned long long i = 0; i < u.size(); i++) {
+            cout << "Container containing: " << u.at(i)->get_description() << " weighing "
+                 << u.at(i)->get_weight() << " kilos located at: " << u.at(i)->get_location()
+                 << " is to be unloaded." << endl;
+            containersToUnload.push_back(u[i]);
+        }
     }
 }
 
 void Operation::set_load(vector<Container *> l)
 {
     //do something with container to be loaded
-    for (unsigned long long i = 0; i < l.size(); i++) {
-        cout << "Container containing: " << l.at(i)->get_description() << " is to be loaded."
-             << endl;
+    if(!l.empty()){
+        for (unsigned long long i = 0; i < l.size(); i++) {
+            cout << "Container containing: " << l.at(i)->get_description() << " is to be loaded."
+                 << endl;
+            containersToLoad.push_back(l[i]);
+        }
     }
 }
 

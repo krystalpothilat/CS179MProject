@@ -41,7 +41,7 @@ public:
     vector<Move *> to_be_completed_moves;
     vector<Container *> to_be_unloaded_options;
     vector<int> indexVector;
-    string moveoutput = " ";
+    string moveoutput = "";
     char load_or_balance = ' ';
     string filepath = " ";
     string filename = " ";
@@ -50,8 +50,11 @@ public:
     QTimeZone pacificTimeZone;
     QDateTime currentTime;
     int time = 0;
+    const int MAXCHARLIMIT = 256;
     unsigned long long index = 0;
     string moveLogMessage;
+    QListWidgetItem *UserName;
+    QListWidgetItem *Manifest;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void showDialog(const QString &message);

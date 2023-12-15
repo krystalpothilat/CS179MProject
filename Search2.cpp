@@ -1,10 +1,9 @@
-#include "Search.h"
+#include "Search2.h"
 
-Search::Search() {
+Search2::Search2() {}
 
-}
 
-void Search::printState(Node* n, int slotsNum){
+void Search2::printState(Node* n, int slotsNum){
     if(n->containerToDrop.arrayLoc!=-1){
         for(int j=0; j</*slotsNum*/24;j++){
             cout<<"\n"<<n->shipState[j].location<<" "<<n->shipState[j].description<<" "<<n->shipState[j].weight;
@@ -14,7 +13,7 @@ void Search::printState(Node* n, int slotsNum){
     }
 }
 
-int Search::getEmptyLoc(int col, Node* n){
+int Search2::getEmptyLoc(int col, Node* n){
     if(col<12){
         if(n->shipState[col+0].description=="UNUSED"){
             return col+0;
@@ -53,7 +52,7 @@ int Search::getEmptyLoc(int col, Node* n){
     }
 }
 
-int Search::getContainerLoc(int col, Node* n){
+int Search2::getContainerLoc(int col, Node* n){
     if(col<12){
         if(n->shipState[col+96].description!="UNUSED" && n->shipState[col+96].description!="NAN"){
             return col+96;
@@ -92,11 +91,13 @@ int Search::getContainerLoc(int col, Node* n){
     }
 }
 
-bool Search::isSameNode(Node* newNode, Node* n, int slotsNum){
+bool Search2::isSameNode(Node* newNode, Node* n, int slotsNum){
     if(newNode->containerToDrop.description==n->containerToDrop.description &&
         newNode->containerToDrop.arrayLoc==n->containerToDrop.arrayLoc &&
         newNode->containerToDrop.location==n->containerToDrop.location &&
-        newNode->containerToDrop.weight==n->containerToDrop.weight){
+        newNode->containerToDrop.weight==n->containerToDrop.weight &&
+        newNode->containersToLoad==n->containersToLoad &&
+        newNode->containersToUnload==n->containersToUnload){
         for(int l=0; l<slotsNum; l++){
             if(newNode->shipState[l].weight!=n->shipState[l].weight ||
                 newNode->shipState[l].arrayLoc!=n->shipState[l].arrayLoc ||
@@ -111,59 +112,78 @@ bool Search::isSameNode(Node* newNode, Node* n, int slotsNum){
     return true;
 }
 
-vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*> alreadyExpanded){
+vector<Node*> Search2::expand(Node* n, int totalCols, int slotsNum, vector<Node*> alreadyExpanded){
     vector<Node*> newNodes;
     int containerLoc;
     int openSpot;
     if(n->containerToDrop.arrayLoc==-1){
+        //pick up a container
         for(int a=0; a<totalCols;a++){
             containerLoc=getContainerLoc(a,n);
             if(containerLoc!=-1){
                 Node* newNode=new Node();
-
+                newNode->containersToLoad=n->containersToLoad;
+                newNode->containersToUnload=n->containersToUnload;
                 newNode->containerToDrop.description=n->shipState[containerLoc].description;
                 newNode->containerToDrop.location=n->shipState[containerLoc].location;
                 newNode->containerToDrop.weight=n->shipState[containerLoc].weight;
                 newNode->containerToDrop.arrayLoc=containerLoc;
                 newNode->operation = NULL;
-                //newNode.parent=n;
                 for(int j=0; j<slotsNum;j++){
                     newNode->shipState[j]=n->shipState[j];
                 }
                 newNode->parent=n;
-                //bool alreadyExists=false;
-                //for(int i=0; i<alreadyExpanded.size(); i++){
-                    //if(isSameNode(newNode, alreadyExpanded[i],slotsNum)){ //prune previous nodes
-                        //alreadyExists=true;
-                        //break;
-                    //}
-                //}
-                //if(!alreadyExists){
-                    newNodes.push_back(newNode);
-                //}
-
+                newNodes.push_back(newNode);
             }
+        }
+        //pick up a container from the truck
+        if(!n->containersToLoad.empty()){
+            Node* newNode=new Node();
+            newNode->containersToLoad=n->containersToLoad;
+            newNode->containersToUnload=n->containersToUnload;
+            newNode->containerToDrop.description=newNode->containersToLoad.back()->get_description();
+            newNode->containerToDrop.location="t";
+            newNode->containerToDrop.weight="-1";
+            newNode->containerToDrop.arrayLoc=-2;
+            newNode->operation = NULL;
+            for(int j=0; j<slotsNum;j++){
+                newNode->shipState[j]=n->shipState[j];
+            }
+            newNode->parent=n;
+            newNodes.push_back(newNode);
         }
     }else{
         //get the columns that aren't full, put the container there and update the state and add it
         for(int b=0;b<totalCols;b++){
             openSpot=getEmptyLoc(b,n);
-            if(openSpot!=-1 && ((openSpot!=n->containerToDrop.arrayLoc+12 &&b<12) || (b>=12 && openSpot!=n->containerToDrop.arrayLoc+24))){ //spot is open and its a new spot
+            if(openSpot!=-1 && ((openSpot!=-2 && openSpot!=n->containerToDrop.arrayLoc+12 &&b<12) || (openSpot!=-2 && b>=12 && openSpot!=n->containerToDrop.arrayLoc+24))){ //spot is open and its a new spot
                 Node* newNode=new Node();
+                newNode->containersToLoad=n->containersToLoad;
+                newNode->containersToUnload=n->containersToUnload;
                 for(int j=0; j<slotsNum;j++){
                     newNode->shipState[j]=n->shipState[j];
                 }
                 //for move object
                 string currLoc=n->containerToDrop.location;
-                int currLocY=stoi(currLoc.substr(0,2));
-                int currLocX=stoi(currLoc.substr(3,2));
-                if(n->containerToDrop.arrayLoc<108){ //is on the ship
+                int currLocY=0;
+                int currLocX=0;
+                if(currLoc!="t"){
+                    currLocY=stoi(currLoc.substr(0,2));
+                    currLocX=stoi(currLoc.substr(3,2));
+                }else{
+                    cout<<"\nFROM TRUCK";
+                }
+                if(n->containerToDrop.arrayLoc<108 && n->containerToDrop.arrayLoc>0){ //is on the ship
                     currLoc="s " + currLoc;
-                }else{ //only other option is buffer since no loading/unloading
+                }else if(n->containerToDrop.arrayLoc>=108 && n->containerToDrop.arrayLoc>0){ //only other option is buffer since no loading/unloading
                     currLoc="b " + currLoc;
                 }
-                Container* mContainer= new Container(currLoc,n->containerToDrop.description,stoi(n->containerToDrop.weight));
-                //string finalLoc=n->containerToDrop.location; //removes brackets
+                Container* mContainer;
+                if(currLoc!="t"){
+                    mContainer= new Container(currLoc,n->containerToDrop.description,stoi(n->containerToDrop.weight));
+                }else{
+                    mContainer= new Container(currLoc,n->containerToDrop.description,-1);
+                }
                 string finalLoc=newNode->shipState[openSpot].location; //removes brackets
                 int finalLocY=stoi(finalLoc.substr(0,2)); //row = y axis
                 int finalLocX=stoi(finalLoc.substr(3,2)); //col = x axis
@@ -202,7 +222,6 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                     }else{
                         cost+=abs(finalLocY-currLocY);
                     }
-
                 }else if(finalLoc.at(0)=='s' && currLoc.at(0)=='b'){
                     cost=abs(9-finalLocY)+abs(1-finalLocX)+4+abs(5-currLocY)+abs(24-currLocX);
                 }else if(finalLoc.at(0)=='b' && currLoc.at(0)=='s'){
@@ -218,7 +237,6 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                         }else{
                             openColLocY=10;
                         }
-
                         if(openColLocY>highestOpenSpotToCollide){
                             highestOpenSpotToCollide=openColLocY;
                         }
@@ -234,135 +252,92 @@ vector<Node*> Search::expand(Node* n, int totalCols, int slotsNum, vector<Node*>
                     }else{
                         cost+=abs(finalLocY-currLocY);
                     }
+                }else if(currLoc.at(0)=='t'){
+                    cost=abs(9-finalLocY)+abs(1-finalLocX)+2;
                 }
                 newNode->cost_g=cost;
                 newNode->operation = new Move(mContainer, finalLoc,cost);
-
                 newNode->shipState[openSpot].description=n->containerToDrop.description;
                 newNode->shipState[openSpot].weight=n->containerToDrop.weight;
-                newNode->shipState[n->containerToDrop.arrayLoc].description="UNUSED";
-                newNode->shipState[n->containerToDrop.arrayLoc].weight="00000";
+                if(currLoc!="t"){
+                    newNode->shipState[n->containerToDrop.arrayLoc].description="UNUSED";
+                    newNode->shipState[n->containerToDrop.arrayLoc].weight="00000";
+                }else{
+                    newNode->containersToLoad.pop_back();
+                }
                 newNode->containerToDrop.arrayLoc=-1;
                 newNode->containerToDrop.weight="nothing picked up";
                 newNode->containerToDrop.description="nothing picked up";
                 newNode->containerToDrop.location="nothing picked up";
                 newNode->parent=n;
-                //cout<<"\nnew node container loc: "<<newNode->containerToDrop.arrayLoc;
-                //cout<<"\nparent node's container loc: "<<n->containerToDrop.arrayLoc;
-                //cout<<"\nparent node's container loc2: "<<newNode->parent->containerToDrop.arrayLoc;
-                //bool alreadyExists=false;
-                //for(int i=0; i<alreadyExpanded.size(); i++){
-                    //if(isSameNode(newNode, alreadyExpanded[i],slotsNum)){ //prune previous nodes
-                        //alreadyExists=true;
-                        //break;
-                    //}
-                //}
-                //if(!alreadyExists){
-                    newNodes.push_back(newNode);
-                    //cout<<"\nnewly created node cost: "<< newNode->cost_g;
-                //}
+                newNodes.push_back(newNode);
             }
         }
+        //unload container
+        if(!n->containersToUnload.empty()){
+            for(int i=0;i<n->containersToUnload.size();i++){
+                if(n->containerToDrop.description==n->containersToUnload[i]->get_description()){
+                    Node* newNode=new Node();
+                    newNode->containersToLoad=n->containersToLoad;
+                    newNode->containersToUnload=n->containersToUnload;
+                    for(int j=0; j<slotsNum;j++){
+                        newNode->shipState[j]=n->shipState[j];
+                    }
+                    //for move object
+                    string currLoc=n->containerToDrop.location;
+                    if(currLoc!="t"){
+                        int currLocY=stoi(currLoc.substr(0,2));
+                        int currLocX=stoi(currLoc.substr(3,2));
+                        if(n->containerToDrop.arrayLoc<108 && n->containerToDrop.arrayLoc>0){ //is on the ship
+                            currLoc="s " + currLoc;
+                        }else if(n->containerToDrop.arrayLoc>=108 && n->containerToDrop.arrayLoc>0){ //only other option is buffer since no loading/unloading
+                            currLoc="b " + currLoc;
+                        }
+                        Container* mContainer;
+                        mContainer= new Container(currLoc,n->containerToDrop.description,stoi(n->containerToDrop.weight));
+                        string finalLoc="t";
+                        int cost=0;
+                        if(currLoc.at(0)=='s'){
+                            cost=abs(9-currLocY)+abs(1-currLocX)+2;
+                        }else if(currLoc.at(0)=='b'){
+                            cost=abs(5-currLocY)+abs(24-currLocX)+2;
+                        }
+                        newNode->cost_g=cost;
+                        newNode->operation = new Move(mContainer, finalLoc,cost);
+                        newNode->shipState[openSpot].description=n->containerToDrop.description;
+                        newNode->shipState[openSpot].weight=n->containerToDrop.weight;
+                        newNode->containersToUnload.erase(newNode->containersToUnload.begin()+i);
+                        newNode->containerToDrop.arrayLoc=-1;
+                        newNode->containerToDrop.weight="nothing picked up";
+                        newNode->containerToDrop.description="nothing picked up";
+                        newNode->containerToDrop.location="nothing picked up";
+                        newNode->parent=n;
+                        newNodes.push_back(newNode);
+                    }
+                    break;
+                }
+            }
+        }
+
     }
     return newNodes;
 }
 
-bool Search::isGoalState(Node* n, string type, int orderedWeights[]){
+bool Search2::isGoalState(Node* n){
     //if goal state, otherwise false
-    if(n->containerToDrop.arrayLoc==-1){ //not holding a container
+    if(n->containersToLoad.empty() && n->containersToUnload.empty()){
         for(int i=96; i<132;i++){ //nothing in buffer or 9th row
             if(n->shipState[i].description!="UNUSED"){
                 return false;
             }
         }
-            //check if balanced, if yes then return true
-            if(type=="normal balance"){
-                int portSideWeight=0;
-                for(int i=0;i<9;i++){
-                    portSideWeight+=stoi(n->shipState[i*12].weight);
-                    portSideWeight+=stoi(n->shipState[(i*12)+1].weight);
-                    portSideWeight+=stoi(n->shipState[(i*12)+2].weight);
-                    portSideWeight+=stoi(n->shipState[(i*12)+3].weight);
-                    portSideWeight+=stoi(n->shipState[(i*12)+4].weight);
-                    portSideWeight+=stoi(n->shipState[(i*12)+5].weight);
-                }
-                int starSideWeight=0;
-                for(int j=0;j<9;j++){
-                    starSideWeight+=stoi(n->shipState[(j*12)+6].weight);
-                    starSideWeight+=stoi(n->shipState[(j*12)+7].weight);
-                    starSideWeight+=stoi(n->shipState[(j*12)+8].weight);
-                    starSideWeight+=stoi(n->shipState[(j*12)+9].weight);
-                    starSideWeight+=stoi(n->shipState[(j*12)+10].weight);
-                    starSideWeight+=stoi(n->shipState[(j*12)+11].weight);
-                }
-                if(portSideWeight==0&&starSideWeight==0){ //ship is empty
-                    return true;
-                }else if(((double)min(portSideWeight,starSideWeight)/(double)max(portSideWeight,starSideWeight))>=0.9){
-                    cout<<"\n normal goal\n";
-                    cout<<"star: "<<starSideWeight;
-                    cout<<"\n port: "<<portSideWeight;
-                    return true;
-                }
-            }else if(type=="sift"){
-                int weightPos=0;
-                for(int c=0; c<9; c++){
-                    if(n->shipState[5+(c*12)].description!="NAN"){
-                        if(n->shipState[5+(c*12)].description!="UNUSED" && stoi(n->shipState[5+(c*12)].weight)!=orderedWeights[weightPos]){
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[6+(c*12)].description!="NAN"){
-                        if(n->shipState[6+(c*12)].description!="UNUSED" && stoi(n->shipState[6+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[4+(c*12)].description!="NAN"){
-                        if(n->shipState[4+(c*12)].description!="UNUSED" && stoi(n->shipState[4+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[4+(c*12)].description!="NAN"){
-                        if(n->shipState[4+(c*12)].description!="UNUSED" && stoi(n->shipState[4+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[7+(c*12)].description!="NAN"){
-                        if(n->shipState[7+(c*12)].description!="UNUSED" && stoi(n->shipState[7+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[3+(c*12)].description!="NAN"){
-                        if(n->shipState[3+(c*12)].description!="UNUSED" && stoi(n->shipState[3+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                    if(n->shipState[8+(c*12)].description!="NAN"){
-                        if(n->shipState[8+(c*12)].description!="UNUSED" && stoi(n->shipState[8+(c*12)].weight)!=orderedWeights[weightPos]){
-                            //isSiftGoal=false;
-                            return false;
-                        }
-                        weightPos++;
-                    }
-                }
-                return true;
-            }
-        //}
+    }else{
+        return false;
     }
-    return false;
+    return true;
 }
 
-vector<Move*> Search::trace(Node* n){
+vector<Move*> Search2::trace(Node* n){
     //trace and convert to move objects
     vector<Move*> moves;
     Node* currNode = n;
@@ -384,28 +359,15 @@ vector<Move*> Search::trace(Node* n){
     return moves;
 }
 
-int Search::getHeuristic(Node* n, int slotsNum){
-    //see slides?
-    //sort all mases on the right side
-    //calculate mass of both sides
-    //Balance mass = left + right
-    //compute the deficit of the smaller side
-    //slide down the list, to the first value <= deficit
-    //deficit-prevFoundValue = new Def
-    // contue previous 2 steps until new def satisfied?
-    //get count of how many containers had to be moved to get that value
-    //get closet available col for each container
-    //add everything together
-    int rightSideSum=0;
-    for(int i=0;i<8;i++){ //sum of "correctly placed" right side
-        rightSideSum+=stoi(n->shipState[0].weight);
-
-    }
-
+int Search2::getHeuristic(Node* n, int slotsNum){
+    //for each containr to be unloaded
+        //+2 + how many cols away from 01(portal to truck)
+    //for each container to be loaded
+        //+2 + how many cols away from first
     return 0;
 }
 
-Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, int orderedWeights[]){
+Node* Search2::getGoalNode(Node* root, int totalCols, int slotsNum){
     vector<Node*> queue;
     queue.push_back(root);
     vector<Node*> alreadyExpanded;
@@ -415,32 +377,23 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
     while(!queue.empty()){
         minPos = 0;
         for(int k=0;k<queue.size();k++){
-            //queue[k].heuristic_h = getHeuristic(queue[k]);
-            queue[k]->heuristic_h = 0;
+            queue[k]->heuristic_h = getHeuristic(queue[k], slotsNum);
             queue[k]->totalCost_f = queue[k]->heuristic_h+ queue[k]->cost_g;
             if(queue[k]->totalCost_f < queue[minPos]->totalCost_f){
                 minPos=k;
             }
         }
         currNode=queue[minPos];
-        cout<<"\npopping a node\n";
         alreadyExpanded.push_back(currNode);
-        //printState(currNode,slotsNum);
         queue.erase(queue.begin()+minPos);
 
-        if(isGoalState(currNode,type,orderedWeights)){
+        if(isGoalState(currNode)){
             cout<<"\ngoal node found!\n";
             return currNode;
         }else{
             expandedNodeOptions=expand(currNode, totalCols, slotsNum, alreadyExpanded);
             cout<<"\nexapnded nodes:\n";
             for(int i=0; i<expandedNodeOptions.size();i++){
-                //printState(expandedNodeOptions[i],slotsNum);
-                cout<<"\n";
-
-                //queue.push_back(expandedNodeOptions[i]);
-
-
                 bool alreadyExists=false;
                 for(int j=0; j<alreadyExpanded.size(); j++){
                     if(isSameNode(expandedNodeOptions[i], alreadyExpanded[j],slotsNum)){ //prune previous nodes
@@ -453,11 +406,8 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
                 if(!alreadyExists){
                     queue.push_back(expandedNodeOptions[i]);
                 }
-
-
-
             }
-         }
+        }
     }
 
     currNode->notValid=true; //no goal state found
@@ -465,12 +415,9 @@ Node* Search::getGoalNode(Node* root, int totalCols, int slotsNum, string type, 
     return currNode;
 }
 
-vector<Move*> Search::getMovesList(){
-    cout<<"in get moves func\n";
+vector<Move*> Search2::getMovesList(vector<Container *> containersToLoad, vector<Container *> containersToUnload){
     vector<Move*> moves;
-    //int totalCols = 13;
     int totalCols = 36;
-    //int slotsNum =108;
     int slotsNum =204;
     Slot slotsArray[slotsNum];
     int i=0;
@@ -597,8 +544,6 @@ vector<Move*> Search::getMovesList(){
     slotsArray[202].location="04,23";
     slotsArray[203].location="04,24";
 
-
-    cout<<"slots all initialized\n";
     Node* root=new Node();
     for(int j=0; j<slotsNum;j++){
         root->shipState[j]=slotsArray[j];
@@ -608,35 +553,25 @@ vector<Move*> Search::getMovesList(){
     root->containerToDrop.location="nothing picked up";
     root->containerToDrop.weight="nothing picked up";
     root->parent=NULL;
-
-    if(root->parent!=NULL){
-        cout<<"root parent != null";
+    if(!containersToLoad.empty()){
+        root->containersToLoad=containersToLoad;
+    }
+    if(!containersToUnload.empty()){
+        root->containersToUnload=containersToUnload;
     }
 
 
-    cout<<"root created\n";
-    int temp[0];
-    cout<<"test";
-    Node* goal = getGoalNode(root, totalCols, slotsNum, "normal balance", temp);
-    cout<<"got goal\n";
-    if(goal->notValid){
-        cout<<"\nDoing SIFT...\n";
-        int orderedWeights[96];
-        for (int c = 0; c < 96; c++) {
-            orderedWeights[c]=stoi(slotsArray[c].weight);
-        }
-
-        for (int i = 0; i < 96; i++)
-            for (int j = 0; j < 96 - i; j++)
-                if (orderedWeights[j] > orderedWeights[j + 1])
-                    swap(orderedWeights[j], orderedWeights[j + 1]);
-
-        goal = getGoalNode(root, totalCols, slotsNum, "sift",orderedWeights);
+    Node* goal = getGoalNode(root, totalCols, slotsNum);
+    //cout<<"got goal\n";
+    if(!goal->notValid){
+        cout<<"got goal\n";
+        moves=trace(goal);
+        printState(goal,slotsNum);
+    }else{
+        cout<<"no goal node found\n";
     }
-    //call trace function
-    //return trace(goal);
-    moves=trace(goal);
 
 
     return moves;
 }
+
