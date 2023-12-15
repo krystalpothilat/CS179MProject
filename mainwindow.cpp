@@ -191,6 +191,7 @@ void MainWindow::display_move(unsigned long long i)
         chosen_coordname = "s" + chosen_coord_format;
     }
 
+    QCoreApplication::processEvents();
     set_container_style(QString::fromStdString(chosen_coordname), "chosen");
     CurrentOperation->set_current_container(QString::fromStdString(chosen_coordname));
 
@@ -213,6 +214,7 @@ void MainWindow::display_move(unsigned long long i)
         goal_coordname = "s" + goal_coord_format;
     }
 
+    QCoreApplication::processEvents();
     set_container_style(QString::fromStdString(goal_coordname), "goal");
     CurrentOperation->set_goal_loc(QString::fromStdString(goal_coordname));
 
@@ -386,14 +388,18 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
         get_unload_options();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
+        QCoreApplication::processEvents();
         set_up_animation();
+        QCoreApplication::processEvents();
         initial_container_setup();
     } else {
         ui->stackedWidget->setCurrentIndex(3);
         QCoreApplication::processEvents();
         string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
+        QCoreApplication::processEvents();
         set_up_animation();
+        QCoreApplication::processEvents();
         initial_container_setup();
         calculate();
     }
