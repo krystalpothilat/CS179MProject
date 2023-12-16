@@ -47,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent)
             qDebug() << "Error creating a new file.";
         }
     }
-
 }
 
 MainWindow::~MainWindow()
@@ -60,11 +59,11 @@ MainWindow::~MainWindow()
     CurrentOperation->reset();
     delete CurrentOperation;
     clear_vectors();
-
 }
 
 // Helper Functions
-void MainWindow::showDialog(const QString &message) {
+void MainWindow::showDialog(const QString &message)
+{
     QDialog *dialog = new QDialog();
     dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
     dialog->setMinimumHeight(140);
@@ -81,7 +80,8 @@ void MainWindow::showDialog(const QString &message) {
     dialog->show();
 }
 
-bool MainWindow::containsNonPrintableCharacters(const QString &text) {
+bool MainWindow::containsNonPrintableCharacters(const QString &text)
+{
     static QRegularExpression nonPrintableRegex("[^\\x20-\\x7E]");
     return text.contains(nonPrintableRegex);
 }
@@ -126,7 +126,7 @@ void MainWindow::clear_vectors()
 void MainWindow::calculate()
 {
     to_be_completed_moves = CurrentOperation->get_moves();
-    if(to_be_completed_moves.empty()){
+    if (to_be_completed_moves.empty()) {
         ui->stackedWidget->setCurrentIndex(5);
         QCoreApplication::processEvents();
         save();
@@ -137,7 +137,8 @@ void MainWindow::calculate()
     for (unsigned long long i = 0; i < to_be_completed_moves.size(); i++) {
         time += to_be_completed_moves.at(i)->get_time();
     }
-    string output = "This Operation will take " + to_string(to_be_completed_moves.size()) + " Moves and " + to_string(time) + " Minutes.";
+    string output = "This Operation will take " + to_string(to_be_completed_moves.size())
+                    + " Moves and " + to_string(time) + " Minutes.";
     ui->XMovesXminutestextdisplay->setText(QString::fromStdString(output));
     ui->X_Moves_X_Minutes_Confirm->setVisible(true);
 }
@@ -145,13 +146,14 @@ void MainWindow::calculate()
 void MainWindow::get_unload_options()
 {
     to_be_unloaded_options = CurrentOperation->get_containers();
-    sort(to_be_unloaded_options.begin(), to_be_unloaded_options.end(),
-         [](Container* a, Container* b) {
-             return a->get_description() < b->get_description();
-         });
+    sort(to_be_unloaded_options.begin(),
+         to_be_unloaded_options.end(),
+         [](Container *a, Container *b) { return a->get_description() < b->get_description(); });
     for (unsigned long long i = 0; i < to_be_unloaded_options.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem();
-        item->setText(QString::fromStdString(to_string(i + 1) + " " + to_be_unloaded_options.at(i)->get_description() + ". " + to_string(to_be_unloaded_options.at(i)->get_weight()) + " Kilos."));
+        item->setText(QString::fromStdString(
+            to_string(i + 1) + " " + to_be_unloaded_options.at(i)->get_description() + ". "
+            + to_string(to_be_unloaded_options.at(i)->get_weight()) + " Kilos."));
         item->setCheckState(Qt::Unchecked);
         ui->unLoadContainerDisplay->addItem(item);
     }
@@ -181,12 +183,12 @@ void MainWindow::display_move(unsigned long long i)
         chosen_coordname = "truckborder";
     } else if (currentContainer->get_location().at(0) == 'b') {
         chosen_coord = currentContainer->get_location().substr(2, 5);
-        chosen_coord_format = chosen_coord.substr(0,2) + chosen_coord.substr(3,2);
+        chosen_coord_format = chosen_coord.substr(0, 2) + chosen_coord.substr(3, 2);
         location = "Buffer at " + chosen_coord;
         chosen_coordname = "b" + chosen_coord_format;
     } else {
         chosen_coord = currentContainer->get_location().substr(2, 5);
-        chosen_coord_format = chosen_coord.substr(0,2) + chosen_coord.substr(3,2);
+        chosen_coord_format = chosen_coord.substr(0, 2) + chosen_coord.substr(3, 2);
         location = "Ship at " + chosen_coord;
         chosen_coordname = "s" + chosen_coord_format;
     }
@@ -195,7 +197,7 @@ void MainWindow::display_move(unsigned long long i)
     set_container_style(QString::fromStdString(chosen_coordname), "chosen");
     CurrentOperation->set_current_container(QString::fromStdString(chosen_coordname));
 
-    if(chosen_coordname != "truckborder"){
+    if (chosen_coordname != "truckborder") {
         manifest_line_chosen = to_line_index(chosen_coord_format);
     }
 
@@ -204,12 +206,12 @@ void MainWindow::display_move(unsigned long long i)
         goal_coordname = "truckborder";
     } else if (to_be_completed_moves.at(i)->get_final_location().at(0) == 'b') {
         goal_coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
-        goal_coord_format = goal_coord.substr(0,2) + goal_coord.substr(3,2);
+        goal_coord_format = goal_coord.substr(0, 2) + goal_coord.substr(3, 2);
         finalLocation = "Buffer at " + goal_coord;
         goal_coordname = "b" + goal_coord_format;
     } else {
         goal_coord = to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
-        goal_coord_format = goal_coord.substr(0,2) + goal_coord.substr(3,2);
+        goal_coord_format = goal_coord.substr(0, 2) + goal_coord.substr(3, 2);
         finalLocation = "Ship at " + to_be_completed_moves.at(i)->get_final_location().substr(2, 5);
         goal_coordname = "s" + goal_coord_format;
     }
@@ -218,13 +220,16 @@ void MainWindow::display_move(unsigned long long i)
     set_container_style(QString::fromStdString(goal_coordname), "goal");
     CurrentOperation->set_goal_loc(QString::fromStdString(goal_coordname));
 
-    if(goal_coordname != "truckborder"){
+    if (goal_coordname != "truckborder") {
         manifest_line_goal = to_line_index(goal_coord_format);
     }
 
-    moveoutput = "Step " + to_string(i + 1) + " of " + to_string(to_be_completed_moves.size()) + "\n";
-    moveoutput += "Move " + currentContainer->get_description() + " from " + location + " to " + finalLocation + "\n";
-    moveoutput += "Time for this move: " + to_string(to_be_completed_moves.at(i)->get_time()) + " Minutes\n";
+    moveoutput = "Step " + to_string(i + 1) + " of " + to_string(to_be_completed_moves.size())
+                 + "\n";
+    moveoutput += "Move " + currentContainer->get_description() + " from " + location + " to "
+                  + finalLocation + "\n";
+    moveoutput += "Time for this move: " + to_string(to_be_completed_moves.at(i)->get_time())
+                  + " Minutes\n";
     moveoutput += "Time remaining: " + to_string(time) + " Minutes\n";
     ui->stepxofxdisplay->setText(QString::fromStdString(moveoutput));
     QString userInputWeight = "";
@@ -240,8 +245,9 @@ void MainWindow::display_move(unsigned long long i)
     }
 
     //format log message for move update
-    moveLogMessage = "Container " + currentContainer->get_description() + ", weighing " + userInputWeight.toStdString() + " kilos has been moved from ";
-    if(location.substr(0,4) == "Ship"){ //container moved from location on ship
+    moveLogMessage = "Container " + currentContainer->get_description() + ", weighing "
+                     + userInputWeight.toStdString() + " kilos has been moved from ";
+    if (location.substr(0, 4) == "Ship") { //container moved from location on ship
         update_manifest(manifest_line_chosen, "UNUSED", 0);
         moveLogMessage += "[" + chosen_coord + "] on Ship to ";
     } else if (location == "Truck") { //moved from truck
@@ -250,10 +256,12 @@ void MainWindow::display_move(unsigned long long i)
         moveLogMessage += "[" + chosen_coord + "] on buffer to ";
     }
 
-    if(finalLocation.substr(0,4) == "Ship"){ //container moved to location on ship
-        update_manifest(manifest_line_goal, currentContainer->get_description(), userInputWeight.toInt());
+    if (finalLocation.substr(0, 4) == "Ship") { //container moved to location on ship
+        update_manifest(manifest_line_goal,
+                        currentContainer->get_description(),
+                        userInputWeight.toInt());
         moveLogMessage += "[" + goal_coord + "] on Ship";
-    } else if (finalLocation == "Truck"){ //moved to truck
+    } else if (finalLocation == "Truck") { //moved to truck
         moveLogMessage += "truck";
     } else { //moved to buffer
         moveLogMessage += "[" + goal_coord + "] on buffer";
@@ -261,47 +269,54 @@ void MainWindow::display_move(unsigned long long i)
 }
 
 //Add leading zeros to container measurements
-string MainWindow::appendLeadingZeros(string input, int width) {
+string MainWindow::appendLeadingZeros(string input, int width)
+{
     ostringstream oss;
     oss << setw(width) << setfill('0') << input;
     return oss.str();
 }
 
 //Get index of line in manifest
-int MainWindow::to_line_index(string s){
-    int row = std::stoi(s.substr(0,2));
-    int col = std::stoi(s.substr(2,2));
-    return ( ((row-1) * 12) + col - 1);
+int MainWindow::to_line_index(string s)
+{
+    int row = std::stoi(s.substr(0, 2));
+    int col = std::stoi(s.substr(2, 2));
+    return (((row - 1) * 12) + col - 1);
 }
 
 //Get coordinates from index of line in manifest
-string MainWindow::to_coordinates(int i){
-    int row = ((i+1)/12) + 1;
-    int col = (i+1) % 12;
+string MainWindow::to_coordinates(int i)
+{
+    int row = ((i + 1) / 12) + 1;
+    int col = (i + 1) % 12;
     return appendLeadingZeros(to_string(row), 2) + "," + appendLeadingZeros(to_string(col), 2);
 }
 
 void MainWindow::save()
 {
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    if(!desktopPath.isEmpty()){
-        QString newFilePath = desktopPath  + QString::fromStdString("/" + filename + "_OUTBOUND.txt");
+    if (!desktopPath.isEmpty()) {
+        QString newFilePath = desktopPath
+                              + QString::fromStdString("/" + filename + "_OUTBOUND.txt");
         QFile file(newFilePath);
 
-        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
             QStringList list = CurrentOperation->get_manifestlines();
-            for(const QString& line : list){
+            for (const QString &line : list) {
                 out << line << "\n";
             }
 
             file.close();
             filepath = newFilePath.toStdString();
-            string output = "Manifest: " + filename + "_OUTBOUND.txt has been saved to:\n " + filepath;
+            string output = "Manifest: " + filename + "_OUTBOUND.txt has been saved to:\n "
+                            + filepath;
             showDialog("Please send outbound manifest to captain.");
             ui->downloadmanifestdisplay->setText(QString::fromStdString(output));
             ui->Download_Manifest_Confirm->setVisible(true);
-            string logmessage = "Finished a cycle. Manifest " + filename + "_OUTBOUND.txt was written to " + filepath + ", and a reminder pop-up to send the file was displayed";
+            string logmessage = "Finished a cycle. Manifest " + filename
+                                + "_OUTBOUND.txt was written to " + filepath
+                                + ", and a reminder pop-up to send the file was displayed";
             updatelog(logmessage);
         } else {
             qDebug() << "Failed to open the file for writing:" << file.errorString();
@@ -309,16 +324,16 @@ void MainWindow::save()
     } else {
         qDebug() << "Failed to get the desktop path.";
     }
-
 }
-
 
 //Flashing Display Slots:
-void MainWindow::toggleLabelVisibility(){
+void MainWindow::toggleLabelVisibility()
+{
     toggleLabelVisibility(CurrentOperation->get_goal_loc());
 }
-void MainWindow::toggleLabelVisibility(const QString labelName){
-    QLabel *label = findChild<QLabel*>(labelName);
+void MainWindow::toggleLabelVisibility(const QString labelName)
+{
+    QLabel *label = findChild<QLabel *>(labelName);
     if (label) {
         label->setVisible(!label->isVisible());
     } else {
@@ -327,7 +342,8 @@ void MainWindow::toggleLabelVisibility(const QString labelName){
 }
 
 //Log:
-string MainWindow::get_date_and_time(){
+string MainWindow::get_date_and_time()
+{
     currentTime = currentUTCtime.toTimeZone(pacificTimeZone);
     int year = currentTime.date().year();
     int month = currentTime.date().month();
@@ -336,16 +352,19 @@ string MainWindow::get_date_and_time(){
     QString formattedMinutes = currentTime.toString("mm");
     QString formattedHours = currentTime.toString("hh");
 
-    string log_date_time = to_string(month) + "/" + formattedDay.toStdString() + "/" + to_string(year) + ": " + formattedHours.toStdString() + ":" + formattedMinutes.toStdString() + " ";
+    string log_date_time = to_string(month) + "/" + formattedDay.toStdString() + "/"
+                           + to_string(year) + ": " + formattedHours.toStdString() + ":"
+                           + formattedMinutes.toStdString() + " ";
     return log_date_time;
 }
 
-void MainWindow::updatelog(string description){
-    QFile file (qlogpath);
+void MainWindow::updatelog(string description)
+{
+    QFile file(qlogpath);
     string datetime = get_date_and_time();
     string s = datetime + description;
 
-    if(file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)){
+    if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         QTextStream stream(&file);
         stream << QString::fromStdString(s) << "\n";
         file.close();
@@ -355,7 +374,8 @@ void MainWindow::updatelog(string description){
 }
 
 //Manifest Updates:
-void MainWindow::update_manifest(int i, string desc, int weight){
+void MainWindow::update_manifest(int i, string desc, int weight)
+{
     cout << "update_manifest" << endl;
     string coord = to_coordinates(i);
     string line = "[" + coord + "], {" + appendLeadingZeros(to_string(weight), 5) + "}, " + desc;
@@ -381,12 +401,14 @@ void MainWindow::on_Main_Menu_Balance_clicked()
 //Upload Manifest Slots:
 void MainWindow::on_Upload_Manifest_Confirm_clicked()
 {
-    CurrentOperation->set_manifest_path(filepath); //sends file path to backend now that user has confirmed their choice
+    CurrentOperation->set_manifest_path(
+        filepath); //sends file path to backend now that user has confirmed their choice
     if (load_or_balance == 'l') {
         ui->stackedWidget->setCurrentIndex(2);
         QCoreApplication::processEvents();
         get_unload_options();
-        string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
+        string description = "Manifest " + filename + " is opened, there are "
+                             + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
         QCoreApplication::processEvents();
         set_up_animation();
@@ -395,7 +417,8 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
     } else {
         ui->stackedWidget->setCurrentIndex(3);
         QCoreApplication::processEvents();
-        string description = "Manifest " + filename + " is opened, there are " + to_string(to_be_unloaded_options.size()) + " containers on the ship";
+        string description = "Manifest " + filename + " is opened, there are "
+                             + to_string(to_be_unloaded_options.size()) + " containers on the ship";
         updatelog(description);
         QCoreApplication::processEvents();
         set_up_animation();
@@ -408,10 +431,13 @@ void MainWindow::on_Upload_Manifest_Confirm_clicked()
 
 void MainWindow::on_UploadManifestSelectFile_clicked()
 {
-    QString qfilepath = QFileDialog::getOpenFileName(this, "Open Manifest",QDir::homePath(),"Text Files (*.txt)");
+    QString qfilepath = QFileDialog::getOpenFileName(this,
+                                                     "Open Manifest",
+                                                     QDir::homePath(),
+                                                     "Text Files (*.txt)");
     string tempfilepath = qfilepath.toStdString();
     ui->Upload_Manifest_Confirm->setVisible(false);
-    if (tempfilepath!= "") {
+    if (tempfilepath != "") {
         filepath = qfilepath.toStdString();
         QFileInfo fileInfo(qfilepath);
         QString qfilename = fileInfo.fileName();
@@ -419,13 +445,12 @@ void MainWindow::on_UploadManifestSelectFile_clicked()
         QString qfilenameWithoutTxt = removeTxtExtension(qfilename);
         filename = qfilenameWithoutTxt.toStdString();
         Manifest->setText(qfilenameWithoutTxt);
-        if(ui->ManifestDisplay->count()==0){
+        if (ui->ManifestDisplay->count() == 0) {
             ui->ManifestDisplay->addItem(Manifest);
         }
         ui->Upload_Manifest_Confirm->setVisible(true);
-    }
-    else{
-        if(ui->ManifestDisplay->count()!=0){
+    } else {
+        if (ui->ManifestDisplay->count() != 0) {
             Manifest->setText("");
         }
     }
@@ -458,28 +483,31 @@ void MainWindow::on_unLoadContainerDisplay_itemClicked(QListWidgetItem *item)
 //Select Load Slots:
 void MainWindow::on_LoadContainerInput_returnPressed()
 {
-    QString qcontainer = ui->LoadContainerInput->text().trimmed();  // Trim whitespace
+    QString qcontainer = ui->LoadContainerInput->text().trimmed(); // Trim whitespace
 
     // Check for an empty string or non printable string
-    if (qcontainer.isEmpty()||containsNonPrintableCharacters(qcontainer)) {
+    if (qcontainer.isEmpty() || containsNonPrintableCharacters(qcontainer)) {
         showDialog("Please enter at least one printable character.");
         ui->LoadContainerInput->setText("");
         return;
     }
     string container = qcontainer.toStdString();
-    if(container.length()>MAXCHARLIMIT){
+    if (container.length() > MAXCHARLIMIT) {
         ui->UserNameInput->setText("");
-        string charactersOverLimit = to_string(container.length()-MAXCHARLIMIT);
-        string output = "Container Description cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        string charactersOverLimit = to_string(container.length() - MAXCHARLIMIT);
+        string output = "Container Description cannot be greater than " + to_string(MAXCHARLIMIT)
+                        + " Characters.\nYou are over the character limit by:\n"
+                        + charactersOverLimit + " characters.";
         ui->LoadContainerInput->setText("");
         showDialog(QString::fromStdString(output));
         return;
     }
-    QStringList invalidStrings = {"nan", "unused", "empty"};
+    QStringList invalidStrings = {"nan", "unused"};
     for (const QString &forbidden : invalidStrings) {
         if (qcontainer.toLower() == forbidden) {
             // Handle invalid input
-            showDialog("Your container description may not solely consist of the words:\n \"NAN\", \"Unused\", or \"Empty\".");
+            showDialog("Your container description may not solely consist of the words:\n \"NAN\" or "
+                       "\"Unused\".");
             ui->LoadContainerInput->setText("");
             return;
         }
@@ -586,21 +614,23 @@ void MainWindow::on_Download_Manifest_Confirm_clicked()
 void MainWindow::on_UserNameInput_returnPressed()
 {
     QString qname = ui->UserNameInput->text().trimmed();
-    if (containsNonPrintableCharacters(qname)||qname.isEmpty()) {
+    if (containsNonPrintableCharacters(qname) || qname.isEmpty()) {
         ui->UserNameInput->setText("");
         showDialog("Please enter at least one printable character.");
         return;
     }
     string name = qname.toStdString();
-    if(name.length()>MAXCHARLIMIT){
+    if (name.length() > MAXCHARLIMIT) {
         ui->UserNameInput->setText("");
-        string charactersOverLimit = to_string(name.length()-MAXCHARLIMIT);
-        string output = "Name cannot be greater than " +to_string(MAXCHARLIMIT)+ " Characters.\nYou are over the character limit by:\n"+charactersOverLimit+" characters.";
+        string charactersOverLimit = to_string(name.length() - MAXCHARLIMIT);
+        string output = "Name cannot be greater than " + to_string(MAXCHARLIMIT)
+                        + " Characters.\nYou are over the character limit by:\n"
+                        + charactersOverLimit + " characters.";
         showDialog(QString::fromStdString(output));
         return;
     }
     UserName->setText(qname);
-    if(ui->UserNameDisplay->count()==0){
+    if (ui->UserNameDisplay->count() == 0) {
         ui->UserNameDisplay->addItem(UserName);
     }
     CurrentOperation->set_username(name);
@@ -613,12 +643,12 @@ void MainWindow::on_NoteInput_returnPressed()
 {
     QString qnote = ui->NoteInput->text().trimmed();
     string note = qnote.toStdString();
-    if (containsNonPrintableCharacters(qnote)||qnote.isEmpty()) {
+    if (containsNonPrintableCharacters(qnote) || qnote.isEmpty()) {
         ui->NoteInput->setText("");
         showDialog("Please enter at least one printable character.");
         return;
     }
-    if(note.length()>MAXCHARLIMIT){
+    if (note.length() > MAXCHARLIMIT) {
         int numChunks = (note.length() + MAXCHARLIMIT - 1) / MAXCHARLIMIT;
 
         for (int i = 0; i < numChunks; ++i) {
@@ -652,32 +682,39 @@ void MainWindow::on_Main_Window_Sign_In_clicked()
 }
 
 //Set Up Animation
-void MainWindow::set_up_animation(){
+void MainWindow::set_up_animation()
+{
     ui->animationbase->setPixmap(QPixmap(":/images/animationbase.png"));
-    QString reg_row = "background-color: white; border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
-    QString right = "background-color: white; border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
-    QString top_row = "background-color: white; border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-top: 0.5px solid black;";
+    QString reg_row = "background-color: white; border-left: 0.5px solid black; border-bottom: "
+                      "0.5px solid black;";
+    QString right = "background-color: white; border-left: 0.5px solid black; border-bottom: 0.5px "
+                    "solid black; border-right: 0.5px solid black;";
+    QString top_row = "background-color: white; border-left: 0.5px solid black; border-bottom: "
+                      "0.5px solid black; border-top: 0.5px solid black;";
     QString top_right = "background-color: white; border: 0.5px solid black;";
-    QString temp = "background-color: white; border-left: 0.5px dashed gray; border-top: 0.5px dashed gray;";
-    QString temp_right = "background-color: white; border-left: 0.5px dashed gray; border-top: 0.5px dashed gray; border-right: 0.5px dashed gray;";
+    QString temp
+        = "background-color: white; border-left: 0.5px dashed gray; border-top: 0.5px dashed gray;";
+    QString temp_right = "background-color: white; border-left: 0.5px dashed gray; border-top: "
+                         "0.5px dashed gray; border-right: 0.5px dashed gray;";
 
     //Buffer rows
     for (int row = 1; row <= 4; ++row) {
         for (int col = 1; col <= 24; ++col) {
-            QString labelName = QString("b%1%2").arg(row, 2, 10, QChar('0')).arg(col, 2, 10, QChar('0'));
-            QLabel *currentLabel = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(labelName));
+            QString labelName
+                = QString("b%1%2").arg(row, 2, 10, QChar('0')).arg(col, 2, 10, QChar('0'));
+            QLabel *currentLabel = dynamic_cast<QLabel *>(
+                ui->centralwidget->findChild<QObject *>(labelName));
 
             if (currentLabel) {
-                if( row == 4 && col == 24){
+                if (row == 4 && col == 24) {
                     currentLabel->setStyleSheet(top_right);
-                }else if (col == 24) {
+                } else if (col == 24) {
                     currentLabel->setStyleSheet(right);
-                } else  if (row == 4){
+                } else if (row == 4) {
                     currentLabel->setStyleSheet(top_row);
                 } else {
                     currentLabel->setStyleSheet(reg_row);
                 }
-
             }
         }
     }
@@ -685,21 +722,23 @@ void MainWindow::set_up_animation(){
     //Ship rows
     for (int row = 1; row <= 9; ++row) {
         for (int col = 1; col <= 12; ++col) {
-            QString labelName = QString("s%1%2").arg(row, 2, 10, QChar('0')).arg(col, 2, 10, QChar('0'));
-            QLabel *currentLabel = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(labelName));
+            QString labelName
+                = QString("s%1%2").arg(row, 2, 10, QChar('0')).arg(col, 2, 10, QChar('0'));
+            QLabel *currentLabel = dynamic_cast<QLabel *>(
+                ui->centralwidget->findChild<QObject *>(labelName));
 
             if (currentLabel) {
-                if( row == 9 ){
-                    if(col == 12){
+                if (row == 9) {
+                    if (col == 12) {
                         currentLabel->setStyleSheet(temp_right);
                     } else {
                         currentLabel->setStyleSheet(temp);
                     }
-                } else if (row == 8 && col == 12){
+                } else if (row == 8 && col == 12) {
                     currentLabel->setStyleSheet(top_right);
                 } else if (col == 12) {
                     currentLabel->setStyleSheet(right);
-                } else  if (row == 8){
+                } else if (row == 8) {
                     currentLabel->setStyleSheet(top_row);
                 } else {
                     currentLabel->setStyleSheet(reg_row);
@@ -722,45 +761,48 @@ void MainWindow::set_up_animation(){
     ui->ship_ylabel2->setStyleSheet("color: black;");
     ui->shipborder->setStyleSheet("border: 0.5px solid black;");
     ui->shiplabel->setStyleSheet("color: black;");
-
 }
 
-void MainWindow::set_container_style(const QString containerName, string type){
+void MainWindow::set_container_style(const QString containerName, string type)
+{
     cout << "set container style " << containerName.toStdString() << " " << type << endl;
-    QLabel *label = dynamic_cast<QLabel*>(ui->centralwidget->findChild<QObject*>(containerName));
+    QLabel *label = dynamic_cast<QLabel *>(ui->centralwidget->findChild<QObject *>(containerName));
     QString style = "";
-    if(containerName[0] != 't'){
-        style = get_style(containerName.mid(1,2).toInt(), containerName.mid(3,2).toInt(), containerName.mid(0,1).toStdString(), type);
+    if (containerName[0] != 't') {
+        style = get_style(containerName.mid(1, 2).toInt(),
+                          containerName.mid(3, 2).toInt(),
+                          containerName.mid(0, 1).toStdString(),
+                          type);
     }
-    if(type == "chosen"){ //container to be moved
+    if (type == "chosen") { //container to be moved
         cout << "setting chosen" << endl;
-        if(containerName[0] == 't'){
+        if (containerName[0] == 't') {
             label->setStyleSheet("border:3px solid #51E260;");
         } else {
             label->setStyleSheet(style);
         }
-    } else if (type == "goal"){ //location for container to be moved to
+    } else if (type == "goal") { //location for container to be moved to
         cout << "setting goal" << endl;
-        if(containerName[0] == 't'){
+        if (containerName[0] == 't') {
             label->setStyleSheet("border:3px solid #F7F02B;");
         } else {
             label->setStyleSheet(style);
         }
         connect(flashTimer, SIGNAL(timeout()), this, SLOT(toggleLabelVisibility()));
         flashTimer->start(750);
-    } else if (type == "NAN"){
+    } else if (type == "NAN") {
         cout << "setting NAN" << endl;
         label->setStyleSheet(style);
-    } else if (type == "set"){ //set location as container
+    } else if (type == "set") { //set location as container
         cout << "setting container" << endl;
-        if(containerName[0] == 't'){
+        if (containerName[0] == 't') {
             label->setVisible(false);
         } else {
             label->setStyleSheet(style);
         }
     } else { //location now empty
         cout << "setting to empty" << endl;
-        if(containerName[0] == 't'){
+        if (containerName[0] == 't') {
             label->setVisible(false);
         } else {
             label->setStyleSheet(style);
@@ -768,63 +810,69 @@ void MainWindow::set_container_style(const QString containerName, string type){
     }
 }
 
-void MainWindow::initial_container_setup(){
+void MainWindow::initial_container_setup()
+{
     QCoreApplication::processEvents();
     cout << "initial container setup" << endl;
-    vector<Container*> containers = CurrentOperation->get_NAN_containers();
-    for(size_t i =0; i < containers.size(); i++){
+    vector<Container *> containers = CurrentOperation->get_NAN_containers();
+    for (size_t i = 0; i < containers.size(); i++) {
         string loc = containers[i]->get_location();
-        string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
+        string loc_format = loc[0] + loc.substr(2, 2) + loc.substr(5, 2);
         QString location = QString::fromStdString(loc_format);
         set_container_style(location, "NAN");
     }
     containers = CurrentOperation->get_containers();
-    for(size_t i=0; i < containers.size(); i++){
+    for (size_t i = 0; i < containers.size(); i++) {
         string loc = containers[i]->get_location();
-        string loc_format = loc[0] + loc.substr(2,2) + loc.substr(5,2);
+        string loc_format = loc[0] + loc.substr(2, 2) + loc.substr(5, 2);
         QString location = QString::fromStdString(loc_format);
         set_container_style(location, "set");
     }
 }
 
-QString MainWindow::get_style(int row, int col, string loc, string type){
+QString MainWindow::get_style(int row, int col, string loc, string type)
+{
     QString style;
-    if(type == "chosen"){ //container to be moved
+    if (type == "chosen") { //container to be moved
         style = "background-color: #51E260;";
-    } else if (type == "goal"){ //location for container to be moved to
-        style ="background-color: #F7F02B;";
-    } else if (type == "NAN"){
+    } else if (type == "goal") { //location for container to be moved to
+        style = "background-color: #F7F02B;";
+    } else if (type == "NAN") {
         style = "background-color: #C9C9C9;";
-    } else if (type == "set"){ //set location as container
+    } else if (type == "set") { //set location as container
         style = "background-color: #498E93;";
     } else { //location now empty
         style = "background-color: white;";
     }
 
-    if(loc == "s"){
-        if (row == 8 && col == 12){
+    if (loc == "s") {
+        if (row == 8 && col == 12) {
             cout << "ship border top right" << endl;
             style += "border: 0.5px solid black;";
         } else if (col == 12) {
             cout << "ship right border" << endl;
-            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
-        } else  if (row == 8){
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; "
+                     "border-right: 0.5px solid black;";
+        } else if (row == 8) {
             cout << "ship top row border" << endl;
-            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
+            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; "
+                     "border-bottom:0.5px solid black;";
         } else {
             cout << "ship any other" << endl;
             style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
         }
-    } else if (loc == "b"){
-        if( row == 4 && col == 24){
+    } else if (loc == "b") {
+        if (row == 4 && col == 24) {
             cout << "buffer border top right" << endl;
             style += "border: 0.5px solid black;";
-        }else if (col == 24) {
+        } else if (col == 24) {
             cout << "buffer right border" << endl;
-            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; border-right: 0.5px solid black;";
-        } else  if (row == 4){
+            style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black; "
+                     "border-right: 0.5px solid black;";
+        } else if (row == 4) {
             cout << "buffer top row border" << endl;
-            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; border-bottom:0.5px solid black;";
+            style += "border-top: 0.5px solid black; border-left: 0.5px solid black; "
+                     "border-bottom:0.5px solid black;";
         } else {
             cout << "buffer any other" << endl;
             style += "border-left: 0.5px solid black; border-bottom: 0.5px solid black;";
@@ -832,15 +880,14 @@ QString MainWindow::get_style(int row, int col, string loc, string type){
     }
 
     return style;
-
 }
 
-void MainWindow::update_container_styles(){
+void MainWindow::update_container_styles()
+{
     QCoreApplication::processEvents();
     cout << "update container styles after move" << endl;
     QString chosen = CurrentOperation->get_current_container();
     set_container_style(chosen, "");
     QString goal = CurrentOperation->get_goal_loc();
     set_container_style(goal, "set");
-
 }
